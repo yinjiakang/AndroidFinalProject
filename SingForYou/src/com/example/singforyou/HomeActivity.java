@@ -1,7 +1,7 @@
 package com.example.singforyou;
 
-import com.example.home.LikeActivity;
-import com.example.home.MarkActivity;
+import com.example.singforyou.home.LikeActivity;
+import com.example.singforyou.home.MarkActivity;
 
 import android.app.ActivityGroup;
 import android.content.Intent;
