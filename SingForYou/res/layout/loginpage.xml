@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-    android:orientation="vertical" 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/loginpage"
-    android:background="@drawable/login_bg" 
-    android:layout_width="fill_parent" 
-    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
     android:gravity="center"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/image"
