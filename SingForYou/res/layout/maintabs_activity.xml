@@ -64,7 +64,7 @@
                     android:text="@string/more" />
             </RadioGroup>
 
-            <TextView
+            <!-- <TextView
                 android:id="@+id/message_mention"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                 android:text=""
                 android:textColor="#ffffffff"
                 android:textSize="13.0sp"
-                android:visibility="visible" />
+                android:visibility="visible" /> -->
         </FrameLayout>
     </LinearLayout>
 

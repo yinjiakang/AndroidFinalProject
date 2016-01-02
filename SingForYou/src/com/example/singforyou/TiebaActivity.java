@@ -26,8 +26,8 @@ public class TiebaActivity extends TabActivity implements
 
 	private TabHost mTabHost = null;
 
-	private TextView mMessageTipsMention = null;
-	private TextView mMessageTipsPerson = null;
+	//private TextView mMessageTipsMention = null;
+	//private TextView mMessageTipsPerson = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class TiebaActivity extends TabActivity implements
 
 		mTabHost = getTabHost();
 		initIntents();
-		initTips();
+		//initTips();
 		initRadios();
 		setupIntents();
 	}
@@ -48,12 +48,12 @@ public class TiebaActivity extends TabActivity implements
 		mMoreIntent = new Intent(this, MoreActivity.class);
 	}
 	
-	private void initTips() {
+	/*private void initTips() {
 		mMessageTipsMention = (TextView) findViewById(R.id.message_mention);
 		mMessageTipsPerson = (TextView) findViewById(R.id.message_person);
 		mMessageTipsMention.setText("2");
 		mMessageTipsPerson.setText("4");
-	}
+	}*/
 
 	private void initRadios() {
 		((RadioButton) findViewById(R.id.radio_home))
