@@ -63,7 +63,7 @@ public class Person {
 	public void setSingTime(int newS) {
 		SingTime = newS;
 	}
-	public void getExperienceValue(int newE) {
+	public void setExperienceValue(int newE) {
 		ExperienceValue = newE;
 	}
 	/*
