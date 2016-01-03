@@ -125,6 +125,7 @@ public final class R {
         public static final int title_home_s=0x7f020053;
     }
     public static final class id {
+        public static final int Wname=0x7f080044;
         public static final int about_bieta=0x7f080032;
         public static final int account_manager=0x7f080025;
         public static final int account_name=0x7f080026;
@@ -183,7 +184,7 @@ public final class R {
         public static final int radio_person_info=0x7f080013;
         public static final int refresh=0x7f080036;
         public static final int regist=0x7f08000f;
-        public static final int register_btn=0x7f080044;
+        public static final int register_btn=0x7f080045;
         public static final int remind_info=0x7f08002a;
         public static final int reply_nodata=0x7f080021;
         public static final int sex=0x7f080040;
