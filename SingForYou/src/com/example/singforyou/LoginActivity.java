@@ -1,5 +1,10 @@
 package com.example.singforyou;
 
+import java.io.StringReader;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
@@ -8,11 +13,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 	private Button Login_TurnToRegister, Login_LoginBtn;
 	private EditText Login_accounts, Login_password;
-	protected static Person person;
+	static Person person;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,8 +48,17 @@ public class LoginActivity extends Activity {
 				 * 		// error
 				 * }
 				 */
-				Intent intent = new Intent(LoginActivity.this, TiebaActivity.class);
-				startActivity(intent);
+				String result = "aaa";
+				if (result.equals("")) {
+					Toast.makeText(LoginActivity.this, "’À∫≈≤ª¥Ê‘⁄", Toast.LENGTH_SHORT).show();
+				}
+				Parser_getPassword(result);
+				if (person.getPassword().equals(password)) {
+					Intent intent = new Intent(LoginActivity.this, TiebaActivity.class);
+					startActivity(intent);
+				} else {
+					Toast.makeText(LoginActivity.this, "√‹¬Î¥ÌŒÛ", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 		
@@ -55,6 +70,40 @@ public class LoginActivity extends Activity {
 			}
 		});
 	}
-	
-
+	private void Parser_getPassword(String xml) {
+		try {
+			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+			XmlPullParser parser = factory.newPullParser();
+			parser.setInput(new StringReader(xml));
+			int eventType = parser.getEventType();
+			
+			while (eventType != XmlPullParser.END_DOCUMENT) {
+				switch (eventType) {
+				case XmlPullParser.START_TAG:
+					if (parser.getName().equals("account")) {
+						person.setAccount(parser.nextText());
+					}
+					if (parser.getName().equals("password")) {
+						person.setPassword(parser.nextText());
+					}
+					if (parser.getName().equals("name")) {
+						person.setName(parser.nextText());
+					}
+					if (parser.getName().equals("singtime")) {
+						person.setSingTime(Integer.parseInt(parser.nextText()));
+					}
+					if (parser.getName().equals("exvalue")) {
+						person.setExperienceValue(Integer.parseInt(parser.nextText()));
+					}
+				case XmlPullParser.END_TAG:
+					break;
+				default:
+					break;
+				}
+				eventType = parser.next();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -6,22 +6,24 @@ import android.R.string;
 import android.text.GetChars;
 
 public class Posts {
-	protected String PostAccount, PostTitle, Content;
+	protected String PostAccount, PostTitle, Content, PostName;
 	protected int PostID, NumOfFloor;
 	protected Boolean isGood;
 	// protected ArrayList<Floor> FloorList;
 	
 	public Posts() {
-		PostAccount = PostTitle = Content = "";
+		PostAccount = PostTitle = Content = PostName = "";
 		isGood = false;
 		PostID = NumOfFloor = -1;
 	}
-	public Posts(String postaccount, String posttitle, String content, int postid, int numoffloor) {
+	public Posts(String postaccount, String posttitle, String content, String postname, int postid, int numoffloor, Boolean isgood) {
 		PostAccount = postaccount;
 		PostTitle = posttitle;
 		Content = content;
 		PostID = postid;
 		NumOfFloor = numoffloor;
+		PostName = postname;
+		isGood = isgood;
 	}
 	/*
 	public Posts(String postaccount, String posttitle, String content, int postid, int numoffloor, ArrayList<Floor> floorlist) {
@@ -41,6 +43,9 @@ public class Posts {
 	}
 	public String getContent() {
 		return Content;
+	}
+	public String getPostName() {
+		return PostName;
 	}
 	public int getPostID() {
 		return PostID;
@@ -63,6 +68,9 @@ public class Posts {
 	}
 	public void setContent(String content) {
 		Content = content;
+	}
+	public void setPostName(String postname) {
+		PostName = postname;
 	}
 	public void setPostID(int numoffloor) {
 		PostID = numoffloor;
