@@ -42,6 +42,8 @@ public class LoginActivity extends Activity {
 				 * 		// error
 				 * }
 				 */
+				Intent intent = new Intent(LoginActivity.this, TiebaActivity.class);
+				startActivity(intent);
 			}
 		});
 		
