@@ -1,31 +1,40 @@
 package com.example.singforyou;
 
 import java.util.ArrayList;
-import java.util.jar.Attributes.Name;
 
 import android.R.string;
 import android.text.GetChars;
 
 public class Posts {
-	protected String Name, PostTitle, Content;
+	protected String PostAccount, PostTitle, Content;
 	protected int PostID, NumOfFloor;
-	protected ArrayList<Floor> FloorList;
+	protected Boolean isGood;
+	// protected ArrayList<Floor> FloorList;
 	
 	public Posts() {
-		Name = PostTitle = Content = "";
-		PostID = -1;
+		PostAccount = PostTitle = Content = "";
+		isGood = false;
+		PostID = NumOfFloor = -1;
 	}
-	public Posts(String name, String posttitle, String content, int postid, int numoffloor, ArrayList<Floor> floorlist) {
-		Name = name;
+	public Posts(String postaccount, String posttitle, String content, int postid, int numoffloor) {
+		PostAccount = postaccount;
+		PostTitle = posttitle;
+		Content = content;
+		PostID = postid;
+		NumOfFloor = numoffloor;
+	}
+	/*
+	public Posts(String postaccount, String posttitle, String content, int postid, int numoffloor, ArrayList<Floor> floorlist) {
+		PostAccount = postaccount;
 		PostTitle = posttitle;
 		Content = content;
 		PostID = postid;
 		NumOfFloor = numoffloor;
 		FloorList = floorlist;
-	}
+	}*/
 	// get
-	public String getName() {
-		return Name;
+	public String getPostAccount() {
+		return PostAccount;
 	}
 	public String getPostTitle() {
 		return PostTitle;
@@ -39,12 +48,15 @@ public class Posts {
 	public int getNumOfFloor() {
 		return NumOfFloor;
 	}
-	public ArrayList<Floor> getFloorList() {
-		return FloorList;
+	public Boolean IsGood() {
+		return isGood;
 	}
+	/*public ArrayList<Floor> getFloorList() {
+		return FloorList;
+	}*/
 	// set
-	public void setName(String name) {
-		Name = name;
+	public void setPostAccount(String postaccount) {
+		PostAccount = postaccount;
 	}
 	public void setPostTitle(String posttitle) {
 		PostTitle = posttitle;
@@ -58,11 +70,16 @@ public class Posts {
 	public void setNumOfFloor(int postid) {
 		NumOfFloor = postid;
 	}
+	/*
 	public void setFloorList(ArrayList<Floor> floorlist) {
 		FloorList = floorlist;
+	}*/
+	public void setIsGood(Boolean isgood) {
+		isGood = isgood;
 	}
+	/*
 	public void addFloor(Floor floor) {
 		setNumOfFloor(NumOfFloor+1);
 		FloorList.add(floor);
-	}
+	}*/
 } 

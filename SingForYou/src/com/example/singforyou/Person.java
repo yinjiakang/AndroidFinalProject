@@ -9,18 +9,25 @@ import android.R.string;
 public class Person {
 	protected String Account, Password, Name;
 	protected int SingTime, ExperienceValue;
-	protected ArrayList<Integer> PostsList;
+	//protected ArrayList<Integer> PostsList;
 	public Person() {
 		Account = Password = Name = "";
 		SingTime = ExperienceValue = 0;
 	}
-	public Person(String account, String password, String name, int singtime, int experience, ArrayList<Integer> postslist) {
+	/*public Person(String account, String password, String name, int singtime, int experience, ArrayList<Integer> postslist) {
 		Account = account;
 		Password = password;
 		Name = name;
 		SingTime = singtime;
 		ExperienceValue = experience;
 		PostsList = postslist;
+	}*/
+	public Person(String account, String password, String name, int singtime, int experience) {
+		Account = account;
+		Password = password;
+		Name = name;
+		SingTime = singtime;
+		ExperienceValue = experience;
 	}
 	
 	//get
@@ -39,10 +46,10 @@ public class Person {
 	public int getExperienceValue() {
 		return ExperienceValue;
 	}
-	public ArrayList<Integer> getPostList() {
+	/*public ArrayList<Integer> getPostList() {
 		return PostsList;
 	}
-	
+	*/
 	//set
 	public void setAccount(String aString) {
 		Account = aString;
@@ -59,7 +66,8 @@ public class Person {
 	public void getExperienceValue(int newE) {
 		ExperienceValue = newE;
 	}
+	/*
 	public void setPostList(ArrayList<Integer> newL) {
 		PostsList = newL;
-	}
+	}*/
 } 

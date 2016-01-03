@@ -5,16 +5,17 @@ import java.util.jar.Attributes.Name;
 import android.R.string;
 
 public class Floor {
-	protected String Content, HostName;
+	protected String Content, HostName, MusicID;
 	protected int BelongTo, FloorID;
 	
 	public Floor() {
-		Content = HostName = "";
+		Content = HostName = MusicID =  "";
 		BelongTo = FloorID = -1;
 	}
-	public Floor(String content, String hostname, int belongto, int floorid) {
+	public Floor(String content, String hostname, String musicid, int belongto, int floorid) {
 		Content = content;
 		BelongTo = belongto;
+		MusicID = musicid;
 		FloorID = floorid;
 		HostName = hostname;
 	}
@@ -24,6 +25,9 @@ public class Floor {
 	}
 	public String getHostName() {
 		return HostName;
+	}
+	public String getMusicID() {
+		return MusicID;
 	}
 	public int getBelongTo() {
 		return BelongTo;
@@ -37,6 +41,9 @@ public class Floor {
 	}
 	public void setHostName(String hostname) {
 		HostName = hostname;
+	}
+	public void setMusicID(String musicid) {
+		MusicID = musicid;
 	}
 	public void setBelongTo(int belongto) {
 		BelongTo = belongto;
