@@ -19,10 +19,11 @@ public class Posts {
 		Name = name;
 		PostTitle = posttitle;
 		Content = content;
-		PostID = PostID;
+		PostID = postid;
 		NumOfFloor = numoffloor;
 		FloorList = floorlist;
 	}
+	// get
 	public String getName() {
 		return Name;
 	}
@@ -41,6 +42,7 @@ public class Posts {
 	public ArrayList<Floor> getFloorList() {
 		return FloorList;
 	}
+	// set
 	public void setName(String name) {
 		Name = name;
 	}

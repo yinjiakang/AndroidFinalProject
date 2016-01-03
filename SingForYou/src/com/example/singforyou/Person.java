@@ -22,6 +22,8 @@ public class Person {
 		ExperienceValue = experience;
 		PostsList = postslist;
 	}
+	
+	//get
 	public String getAccount() {
 		return Account;
 	}
@@ -41,6 +43,7 @@ public class Person {
 		return PostsList;
 	}
 	
+	//set
 	public void setAccount(String aString) {
 		Account = aString;
 	}

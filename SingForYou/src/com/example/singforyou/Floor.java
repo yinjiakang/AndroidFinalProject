@@ -18,6 +18,7 @@ public class Floor {
 		FloorID = floorid;
 		HostName = hostname;
 	}
+	// get
 	public String getContent() {
 		return Content;
 	}
@@ -30,6 +31,7 @@ public class Floor {
 	public int getFloorID() {
 		return FloorID;
 	}
+	// set
 	public void setContent(String content) {
 		Content = content;
 	}
