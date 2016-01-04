@@ -4,9 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.hw5.MainActivity;
-import com.example.hw5.MusicService;
-import com.example.hw5.R;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -155,7 +152,7 @@ public class ContentActivity extends Activity {
 
 	        // 获取控件,填充数据 
 	        TextView tView1 = (TextView) ContactListView.findViewById(R.id.floorName); 
-	        tView1.setText(file.getUser()); 
+	        tView1.setText(file.getHostName()); 
 	        return ContactListView; 
 	    }
 	}

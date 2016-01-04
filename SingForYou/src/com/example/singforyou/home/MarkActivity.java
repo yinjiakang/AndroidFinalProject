@@ -62,7 +62,7 @@ public class MarkActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Posts post = new Posts("", edtitle.toString(), edcon.toString(), NUM, 0);
+				//Posts post = new Posts("", edtitle.toString(), edcon.toString(), NUM, 0);
 				//List<Posts> l;
 				//l.add(post);
 				//传递数值给佳鹏

@@ -7,16 +7,15 @@ import android.text.GetChars;
 
 public class Posts {
 	protected String PostAccount, PostTitle, Content, PostName;
-	protected int PostID, NumOfFloor;
-	protected Boolean isGood;
+	protected int PostID, NumOfFloor, isGood;
 	// protected ArrayList<Floor> FloorList;
 	
 	public Posts() {
 		PostAccount = PostTitle = Content = PostName = "";
-		isGood = false;
+		isGood = 0;
 		PostID = NumOfFloor = -1;
 	}
-	public Posts(String postaccount, String posttitle, String content, String postname, int postid, int numoffloor, Boolean isgood) {
+	public Posts(String postaccount, String posttitle, String content, String postname, int postid, int numoffloor, int isgood) {
 		PostAccount = postaccount;
 		PostTitle = posttitle;
 		Content = content;
@@ -53,7 +52,7 @@ public class Posts {
 	public int getNumOfFloor() {
 		return NumOfFloor;
 	}
-	public Boolean IsGood() {
+	public int IsGood() {
 		return isGood;
 	}
 	/*public ArrayList<Floor> getFloorList() {
@@ -82,7 +81,7 @@ public class Posts {
 	public void setFloorList(ArrayList<Floor> floorlist) {
 		FloorList = floorlist;
 	}*/
-	public void setIsGood(Boolean isgood) {
+	public void setIsGood(int isgood) {
 		isGood = isgood;
 	}
 	/*
