@@ -25,8 +25,10 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 	static final String url = "http://";
-	static Person person = new Person();
-	static ArrayList<Posts> all_posts, all_good_posts, all_my_posts;
+	public static Person person = new Person();
+	public static ArrayList<Posts> all_posts;
+	static ArrayList<Posts> all_good_posts;
+	static ArrayList<Posts> all_my_posts;
 	HttpURLConnection connection = null;
 	DataOutputStream out;
 	InputStream in;
