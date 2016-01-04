@@ -16,6 +16,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import com.example.singforyou.ContentActivity;
 import com.example.singforyou.R;
 
 import android.app.Activity;
@@ -157,7 +158,7 @@ public class LikeActivity extends Activity {
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 			messagelistview mlistview = null;
 			if (convertView == null) {
@@ -176,7 +177,10 @@ public class LikeActivity extends Activity {
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 					// TODO Auto-generated method stub
-					Intent intent = new Intent(LikeActivity.this, LikeActivity.class);
+					Intent intent = new Intent(LikeActivity.this, ContentActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("PID", messagelist.get(position).getPID().toString());
+					intent.putExtras(bundle);
 					startActivity(intent);
 				}
 			});

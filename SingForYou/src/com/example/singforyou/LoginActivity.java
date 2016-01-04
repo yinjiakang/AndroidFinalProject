@@ -18,7 +18,7 @@ import android.widget.Toast;
 public class LoginActivity extends Activity {
 	private Button Login_TurnToRegister, Login_LoginBtn;
 	private EditText Login_accounts, Login_password;
-	static Person person;
+	static Person person = new Person();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
