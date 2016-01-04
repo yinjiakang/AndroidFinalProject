@@ -66,23 +66,6 @@ public class LoginActivity extends Activity {
 					startActivity(intent);
 					
 				}
-
-				/*
-				 * need db
-				 * post    account
-				 * if exists , return Person
-				 * else return empty string
-				 */
-				
-				/* 
-				 * if (person.getPassword().equals(password)) {
-				 * 		Intent intent = new Intent(LoginActivity.this, TiebaActivity.class);
-				 * 		startActivity(intent);
-				 * } else {
-				 * 		// error
-				 * }
-				 */
-
 			}
 		});
 		
