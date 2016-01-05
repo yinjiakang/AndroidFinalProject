@@ -40,6 +40,9 @@
             android:name=".MentionActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
+            android:name=".RecordActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
             android:name=".PersonInfoActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
@@ -51,6 +54,7 @@
         <activity
             android:name=".home.MarkActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
+        
     </application>
 
 </manifest>
