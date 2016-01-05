@@ -16,7 +16,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import com.example.singforyou.home.LikeActivity.message;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -54,6 +53,7 @@ public class ContentActivity extends Activity {
 	/////////////////////////////////////////////
 	private static final String url = "http://115.28.70.78/querypost";
 	private static final String url1 = "http://115.28.70.78/queryfloor";
+	private static final String url2 = "http://115.28.70.78/addgood";
 	private Posts post = new Posts();
 	private Button share;
 	/////////////////////////////////////////////
@@ -174,7 +174,7 @@ public class ContentActivity extends Activity {
         	        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
         	        
         	        //out.writeBytes("mobileCode=" + pNumber.getText().toString() + "&userID=");
-        	        out.writeBytes("PID=" + PID); 
+        	        out.writeBytes("pid=" + PID); 
         	        InputStream in = connection.getInputStream();
         	        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         	        StringBuilder response = new StringBuilder();
@@ -193,7 +193,7 @@ public class ContentActivity extends Activity {
         	        connection.setReadTimeout(40000);
         	        
         	        out = new DataOutputStream(connection.getOutputStream());
-        	        out.writeBytes("PID=" + PID);
+        	        out.writeBytes("pid=" + PID);
         	        in = connection.getInputStream();
         	        reader = new BufferedReader(new InputStreamReader(in));
         	        StringBuilder response1 = new StringBuilder();
@@ -225,7 +225,44 @@ public class ContentActivity extends Activity {
 				// TODO Auto-generated method stub
 				post.setIsGood(1);
 				LoginActivity.all_good_posts.add(post);
-				//传递给佳鹏数据库（未实现）
+				
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						HttpURLConnection connection = null;
+		    			try {
+		        			connection = (HttpURLConnection)((new URL(url2.toString()).openConnection()));
+		        			connection.setRequestMethod("POST");
+		        	        connection.setConnectTimeout(40000);
+		        	        connection.setReadTimeout(40000);
+		        	        
+		        	        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+		        	        
+		        	        //out.writeBytes("mobileCode=" + pNumber.getText().toString() + "&userID=");
+		        	        out.writeBytes("pid=" + PID); 
+		        	        InputStream in = connection.getInputStream();
+		        	        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		        	        StringBuilder response = new StringBuilder();
+		        	        
+		        	        String line;
+		        	        while ((line = reader.readLine()) != null) {
+		        	        	response.append(line);
+		        	        }
+		        	        
+		        	        
+		    			} catch (Throwable e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} finally {
+		    				if (connection != null) {
+		        				connection.disconnect();
+		        			}
+		    			}
+					}
+					
+				}).start();
 			}
 		});
 		
@@ -274,19 +311,19 @@ public class ContentActivity extends Activity {
 			while (eventType != XmlPullParser.END_DOCUMENT) {
 				switch (eventType) {
 				case XmlPullParser.START_TAG:
-					if ("PId".equals(parser.getName())) {
+					if ("pid".equals(parser.getName())) {
 						p.setPostID(Integer.parseInt(parser.nextText()));
-					} else if ("PAc".equals(parser.getName())) {
+					} else if ("pac".equals(parser.getName())) {
 						p.setPostAccount(parser.nextText());
-					} else if ("PTitle".equals(parser.getName())) {
+					} else if ("ptitle".equals(parser.getName())) {
 						p.setPostTitle(parser.nextText());
-					} else if ("PContent".equals(parser.getName())) {
+					} else if ("pcontent".equals(parser.getName())) {
 						p.setContent(parser.nextText());
-					} else if ("NOF".equals(parser.getName())) {
+					} else if ("nof".equals(parser.getName())) {
 						p.setNumOfFloor(Integer.parseInt(parser.nextText()));
-					} else if ("Isgood".equals(parser.getName())) {
+					} else if ("isgood".equals(parser.getName())) {
 						p.setIsGood(Integer.parseInt(parser.nextText()));
-					} else if ("PName".equals(parser.getName())) {
+					} else if ("pname".equals(parser.getName())) {
 						p.setPostName(parser.nextText());
 					}
 					break;
@@ -322,15 +359,15 @@ public class ContentActivity extends Activity {
 			while (eventType != XmlPullParser.END_DOCUMENT) {
 				switch (eventType) {
 				case XmlPullParser.START_TAG:
-					if ("FId".equals(parser.getName())) {
+					if ("fid".equals(parser.getName())) {
 						FId = Integer.parseInt(parser.nextText());
-					} else if ("BTo".equals(parser.getName())) {
+					} else if ("bto".equals(parser.getName())) {
 						BTo = Integer.parseInt(parser.nextText());
-					} else if ("FContent".equals(parser.getName())) {
+					} else if ("fcontent".equals(parser.getName())) {
 						FContent = parser.nextText();
-					} else if ("HostName".equals(parser.getName())) {
+					} else if ("hostname".equals(parser.getName())) {
 						HostName = parser.nextText();
-					} else if ("MId".equals(parser.getName())) {
+					} else if ("mid".equals(parser.getName())) {
 						MId = parser.nextText();
 						f.add(new Floor(FContent, HostName, MId, BTo, FId));
 					}

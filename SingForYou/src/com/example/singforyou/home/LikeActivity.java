@@ -17,6 +17,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.example.singforyou.ContentActivity;
+import com.example.singforyou.LoginActivity;
+import com.example.singforyou.Posts;
 import com.example.singforyou.R;
 
 import android.app.Activity;
@@ -34,7 +36,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class LikeActivity extends Activity {
-	public class message {
+	/*public class message {
 		private String name;
 		private String title;
 		private String PID;
@@ -62,13 +64,13 @@ public class LikeActivity extends Activity {
 		public String getPID() {
 			return PID;
 		}
-	}
+	}*/
 	
-	private List<message> messagelist = new ArrayList<message>();
+	//private List<message> messagelist = new ArrayList<message>();
 	private ListView l;
 	private MessageAdapter Fadapter;
 	
-	private List<message> parseXMLWithPull(String xml) {
+	/*private List<message> parseXMLWithPull(String xml) {
 		List<message> mlist = new ArrayList<message>();
 		String name = "", title = "", PId = "";
 		try {
@@ -105,7 +107,7 @@ public class LikeActivity extends Activity {
 			e.printStackTrace();
 		}
 		return mlist;
-	}
+	}*/
 	
 	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -114,27 +116,27 @@ public class LikeActivity extends Activity {
 		String xml = "<?xml version='1.0' encoding='UTF-8'?><recipe><PId>1</PId><PAc>哇哇哇哇哇</PAc><PTitle>啦啦啦啦啦啦啦</PTitle><PContent>想听一曲月中桂</PContent><NOF>2</NOF><Isgood>0</Isgood><PName>我叫MT</PName><PId>2</PId><PAc>六月六</PAc><PTitle>正月里来是新春啊啊啊</PTitle><PContent>啊啊啊啊啊啊</PContent><NOF>3</NOF><Isgood>0</Isgood><PName>我叫MT</PName><PId>3</PId><PAc>下雨了</PAc><PTitle>丑八怪</PTitle><PContent>方圆几里</PContent><NOF>2</NOF><Isgood>1</Isgood><PName>我叫MT</PName><PId>4</PId><PAc>you are my sunshine</PAc><PTitle>my only sunshine</PTitle><PContent>you make me happy</PContent><NOF>2</NOF><Isgood>0</Isgood><PName>我叫MT</PName></recipe>";
 		
 		//佳鹏给我一个xml文件包含所有的贴子
-		messagelist = parseXMLWithPull(xml);
+		//messagelist = parseXMLWithPull(xml);
 		//messagelist.add(new message("叫我XXX", "我要听哈哈哈哈哈哈哈哈哈哈哈哈哈哈"));
 		//messagelist.add(new message("楼上是SB", "大大大大大大大大大大大大大大"));
 		//messagelist.add(new message("楼下唱歌好难听", "想听一曲凤池吟~~~~~~~~~"));
 		
 		l = (ListView)findViewById(R.id.home_lv_forum);
-		Fadapter = new MessageAdapter(this, messagelist);
+		Fadapter = new MessageAdapter(this, LoginActivity.all_posts);
 		l.setAdapter(Fadapter);
 	}
 	
 	
 	public class MessageAdapter extends BaseAdapter {
 
-		private List<message> messagelist;
+		private List<Posts> messagelist;
 		private Context context;
 		private LayoutInflater layoutInflater;
 		public class messagelistview {
 			public TextView t1;
 			public TextView t2;
 		}
-		public MessageAdapter(Context context, List<message> objects) {
+		public MessageAdapter(Context context, List<Posts> objects) {
 			this.context = context;
 			layoutInflater = LayoutInflater.from(context);
 			messagelist = objects;
@@ -170,8 +172,8 @@ public class LikeActivity extends Activity {
     		} else {
     			mlistview = (messagelistview)convertView.getTag();
     		}
-			mlistview.t1.setText((String)messagelist.get(position).getName());
-    		mlistview.t2.setText((String)messagelist.get(position).getTitle());
+			mlistview.t1.setText((String)messagelist.get(position).getPostName());
+    		mlistview.t2.setText((String)messagelist.get(position).getPostTitle());
     		l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 				@Override
@@ -179,7 +181,7 @@ public class LikeActivity extends Activity {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent(LikeActivity.this, ContentActivity.class);
 					Bundle bundle = new Bundle();
-					bundle.putString("PID", messagelist.get(position).getPID().toString());
+					bundle.putString("PID", String.valueOf(messagelist.get(position).getPostID()));
 					intent.putExtras(bundle);
 					startActivity(intent);
 				}

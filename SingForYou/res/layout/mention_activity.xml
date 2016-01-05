@@ -4,10 +4,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#fff1f1f1" >
+    
+    
+    
 
     <!-- 标题栏 -->
 
-    <LinearLayout
+    <!-- <LinearLayout
         android:id="@+id/mention_layout_bar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -63,7 +66,7 @@
         android:layout_below="@id/mention_layout_bar"
         android:layout_marginTop="-12.0dip">
 
-        <!-- 回复我的 -->
+        回复我的
 
         <FrameLayout
             android:id="@+id/mention_layout_replyme"
@@ -93,7 +96,7 @@
                 android:visibility="gone" />
         </FrameLayout>
 
-        <!-- @我的 -->
+        @我的
 
         <FrameLayout
             android:id="@+id/mention_layout_atme"
@@ -142,6 +145,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone" />
+    </LinearLayout> -->
+
+
+    <LinearLayout
+        android:id="@+id/mentionactivity_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="top"
+        android:background="@drawable/title_bg" >
+        <TextView
+            android:id="@+id/mentionactivity_textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginRight="10.0dip"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:textSize="8pt"
+            android:text="精品区" />
     </LinearLayout>
+    <ListView
+        android:id="@+id/mentionactivity_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mentionactivity_title"
+        android:layout_weight="1.0"
+        android:background="#fff1f1f1"
+        android:cacheColorHint="#fff1f1f1"
+        android:divider="@drawable/list_divider"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="3.0dip"
+        android:listSelector="@drawable/list_selector" />
 
 </RelativeLayout>

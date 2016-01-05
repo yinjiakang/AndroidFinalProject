@@ -1,5 +1,11 @@
 package com.example.singforyou.home;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,6 +38,8 @@ public class MarkActivity extends Activity {
 	private FrameLayout mContent;
 	private int isStart = 0;
 	
+	private static final String url = "http://115.28.70.78/newpost";
+	
 	//Timer timer = new Timer();
 	void Dialog() {
 		Log.w("1", "aa");
@@ -62,10 +70,49 @@ public class MarkActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//Posts post = new Posts("", edtitle.toString(), edcon.toString(), NUM, 0);
+				Posts post = new Posts(LoginActivity.person.getAccount(), edtitle.toString(), edcon.toString(), LoginActivity.person.getName(), 0, 0, 0);
 				//List<Posts> l;
 				//l.add(post);
 				//传递数值给佳鹏
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						HttpURLConnection connection = null;
+		    			try {
+		        			connection = (HttpURLConnection)((new URL(url.toString()).openConnection()));
+		        			connection.setRequestMethod("POST");
+		        	        connection.setConnectTimeout(40000);
+		        	        connection.setReadTimeout(40000);
+		        	        
+		        	        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+		        	        
+		        	        //out.writeBytes("mobileCode=" + pNumber.getText().toString() + "&userID=");
+		        	        out.writeBytes("pac=" +  LoginActivity.person.getAccount() + "&ptitle=" + edtitle.toString() + "&pcontent=" + edcon.toString() + "&pname=" + LoginActivity.person.getName() + "&pid=" + "0" + "&nof=" + "0" + "&isgood=" + "0");
+		        	        
+		        	        InputStream in = connection.getInputStream();
+		        	        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		        	        StringBuilder response = new StringBuilder();
+		        	        
+		        	        String line;
+		        	        while ((line = reader.readLine()) != null) {
+		        	        	response.append(line);
+		        	        }
+		        	        
+		        	        
+		    			} catch (Throwable e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} finally {
+		    				if (connection != null) {
+		        				connection.disconnect();
+		        			}
+		    			}
+					}
+					
+				}).start();
+				LoginActivity.all_posts.add(post);
 				Intent intent = new Intent(MarkActivity.this, TiebaActivity.class);
 				startActivity(intent);
 				finish();

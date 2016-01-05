@@ -23,13 +23,13 @@
             android:layout_weight="1.0"
             android:gravity="center_horizontal"
             android:singleLine="true"
-            android:text="@string/more"
+            android:text="我的贴子"
             android:textColor="#ffffffff"
             android:textSize="15.0sp" />
     </LinearLayout>
 
-    <!-- 内容区域 -->
-    <ScrollView
+    内容区域
+    <!-- <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/title"
@@ -333,6 +333,17 @@
                     android:textSize="14.0sp" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </ScrollView> -->
+
+
+
+    <ListView
+        android:id="@+id/moreactivity_listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/title" >
+
+    </ListView>
 
 </RelativeLayout>
