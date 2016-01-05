@@ -50,10 +50,11 @@ public class SignupActivity extends Activity {
 				String password = Signup_password.getText().toString();
 				String name = Signup_name.getText().toString(); 
 				
+				String currenturl = "http://115.28.70.78/signup";
 				String query = "account=" + account + "&password" + password + "&name=" + name
 						+ "&singtime=8&exvalue=0";
 				
-				String result = ConnectToUrl(query);
+				String result = ConnectToUrl(currenturl, query);
 				
 				if (result.equals("success")) {
 					Initialize_person(account, password, name, 8, 0);
@@ -68,9 +69,9 @@ public class SignupActivity extends Activity {
 		});
 	}
 	
-	private String ConnectToUrl(String content) {
+	private String ConnectToUrl(String url, String content) {
 		try {
-			connection = (HttpURLConnection)((new URL(LoginActivity.url.toString()).openConnection()));
+			connection = (HttpURLConnection)((new URL(url).openConnection()));
 			connection.setRequestMethod("POST");
 			connection.setConnectTimeout(40000);
 			connection.setReadTimeout(40000);

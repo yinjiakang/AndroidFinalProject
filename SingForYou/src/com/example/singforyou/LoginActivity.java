@@ -24,7 +24,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity {
-	static final String url = "http://";
 	public static Person person = new Person();
 	public static ArrayList<Posts> all_posts;
 	static ArrayList<Posts> all_good_posts;
@@ -49,9 +48,10 @@ public class LoginActivity extends Activity {
 				String account = Login_accounts.getText().toString();
 				String password = Login_password.getText().toString();
 				
+				String currenturl = "http://115.28.70.78/login";
 				String query = "account=" + account + "&password" + password;
 				
-				String result = ConnectToUrl(query);
+				String result = ConnectToUrl(currenturl, query);
 				
 				// ’À∫≈≤ª¥Ê‘⁄ªÚ√‹¬Î¥ÌŒÛ
 				if (result.equals("")) {
@@ -80,9 +80,9 @@ public class LoginActivity extends Activity {
 		});
 	}
 	
-	private String ConnectToUrl(String content) {
+	private String ConnectToUrl(String url, String content) {
 		try {
-			connection = (HttpURLConnection)((new URL(url.toString()).openConnection()));
+			connection = (HttpURLConnection)((new URL(url).openConnection()));
 			connection.setRequestMethod("POST");
 			connection.setConnectTimeout(40000);
 			connection.setReadTimeout(40000);
@@ -214,13 +214,15 @@ public class LoginActivity extends Activity {
 	private void LoadAllAndGoodPosts() {
 		all_posts.clear();
 		all_good_posts.clear();
-		String result = ConnectToUrl("getallposts");
+		String currenturl = "http://115.28.70.78/queryallposts";
+		String result = ConnectToUrl(currenturl, "getallposts");
 		Parser_allposts(result, 0);
 	}
 	
 	private void LoadMyPosts() {
 		all_my_posts.clear();
-		String result = ConnectToUrl("getmyposts");
+		String currenturl = "http://115.28.70.78/querymyposts";
+		String result = ConnectToUrl(currenturl, "account=" + person.getAccount());
 		Parser_allposts(result, 1);
 	}
 }
