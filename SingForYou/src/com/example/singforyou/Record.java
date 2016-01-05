@@ -1,4 +1,4 @@
-package com.example.sunsheng.finalproject;
+package com.example.singforyou;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
