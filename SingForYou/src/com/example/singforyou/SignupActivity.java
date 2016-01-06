@@ -49,73 +49,69 @@ public class SignupActivity extends Activity {
 		Signup_register_btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String account = Signup_account.getText().toString();
-				String password = Signup_password.getText().toString();
-				String name = Signup_name.getText().toString(); 
+				final String account = Signup_account.getText().toString();
+				final String password = Signup_password.getText().toString();
+				final String name = Signup_name.getText().toString(); 
 				
-				String currenturl = "http://115.28.70.78/signup";
-				String query = "account=" + account + "&password=" + password + "&name=" + name
+				final String currenturl = "http://115.28.70.78/signup";
+				final String query = "account=" + account + "&password=" + password + "&name=" + name
 						+ "&singtime=8&exvalue=0";
 				Log.v("aa", "1");
-				result="";
-				ConnectToUrl(currenturl, query);
-
-				Log.v("aa", result);
-				if (result.equals("success")) {
-					Initialize_person(account, password, name, 8, 0);
-					Toast.makeText(SignupActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-					Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-					startActivity(intent);
-				} 
-				else if (result.equals("exist")) {
-					Toast.makeText(SignupActivity.this, "账户名已存在", Toast.LENGTH_SHORT).show();
-				}
+				new Thread() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						try {
+							connection = (HttpURLConnection)((new URL(currenturl).openConnection()));
+							connection.setRequestMethod("POST");
+							connection.setConnectTimeout(40000);
+							connection.setReadTimeout(40000);
+							Log.w("a1", "11");
+							out  = new DataOutputStream(connection.getOutputStream());
+							Log.w("a1", "22");
+							//out.writeBytes("mobileCode="+ phone_number.getText().toString() + "&userID=");
+							out.writeBytes(query);
+							Log.w("a1", "33");
+							
+							in = connection.getInputStream();
+							Log.w("a1", "44");
+							BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+							Log.w("a1", "55");
+							StringBuilder response = new StringBuilder();
+							Log.w("a1", "66");
+							String line;
+							Log.w("a1", "77");
+							while ((line = reader.readLine()) != null) {
+								response.append(line);
+							}
+							Log.w("a1", response.toString());
+							result = response.toString();
+							Log.w("a1", "99");
+							if (result.equals("success")) {
+								Initialize_person(account, password, name, 8, 0);
+								Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+								startActivity(intent);
+							} 
+							else if (result.equals("exist")) {
+								Toast.makeText(SignupActivity.this, "账户名已存在", Toast.LENGTH_SHORT).show();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+							result = "";
+						} finally {
+							if (connection != null) {
+								connection.disconnect();
+							}
+						}
+					}
+					
+				}.start();;
 			}
 		});
 	}
-	private void ConnectToUrl(final String url, final String content) {
-		new Thread() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				try {
-					connection = (HttpURLConnection)((new URL(url).openConnection()));
-					connection.setRequestMethod("POST");
-					connection.setConnectTimeout(40000);
-					connection.setReadTimeout(40000);
-					Log.w("a1", "11");
-					out  = new DataOutputStream(connection.getOutputStream());
-					Log.w("a1", "22");
-					//out.writeBytes("mobileCode="+ phone_number.getText().toString() + "&userID=");
-					out.writeBytes(content);
-					Log.w("a1", "33");
-					
-					in = connection.getInputStream();
-					Log.w("a1", "44");
-					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-					Log.w("a1", "55");
-					StringBuilder response = new StringBuilder();
-					Log.w("a1", "66");
-					String line;
-					Log.w("a1", "77");
-					while ((line = reader.readLine()) != null) {
-						response.append(line);
-					}
-					Log.w("a1", response.toString());
-					result = response.toString();
-					Log.w("a1", "99");
-				} catch (Exception e) {
-					e.printStackTrace();
-					result = "";
-				} finally {
-					if (connection != null) {
-						connection.disconnect();
-					}
-				}
-			}
-			
-		}.start();;
-	}
+	/*private void ConnectToUrl(final String url, final String content) {
+
+	}*/
 	
 	private void Initialize_person(String ac, String ps, String na, int st, int exv) {
 		LoginActivity.person.setAccount(ac);
