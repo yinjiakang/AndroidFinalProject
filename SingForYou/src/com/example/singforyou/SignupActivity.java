@@ -66,27 +66,26 @@ public class SignupActivity extends Activity {
 							connection.setRequestMethod("POST");
 							connection.setConnectTimeout(40000);
 							connection.setReadTimeout(40000);
-							Log.w("a1", "11");
+
 							out  = new DataOutputStream(connection.getOutputStream());
-							Log.w("a1", "22");
+
 							//out.writeBytes("mobileCode="+ phone_number.getText().toString() + "&userID=");
 							out.writeBytes(query);
-							Log.w("a1", "33");
+
 							
 							in = connection.getInputStream();
-							Log.w("a1", "44");
+
 							BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-							Log.w("a1", "55");
+
 							StringBuilder response = new StringBuilder();
-							Log.w("a1", "66");
+
 							String line;
-							Log.w("a1", "77");
-							while ((line = reader.readLine()) != null) {
+							Log.w("a1", "77");							while ((line = reader.readLine()) != null) {
 								response.append(line);
 							}
-							Log.w("a1", response.toString());
+
 							result = response.toString();
-							Log.w("a1", "99");
+
 							if (result.equals("success")) {
 								Initialize_person(account, password, name, 8, 0);
 								Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
