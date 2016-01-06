@@ -27,8 +27,15 @@
         android:layout_width="wrap_content" 
        	android:layout_height="wrap_content" 
         android:id="@+id/Host_content"/>
-    <ListView android:id="@+id/content_listview" 
+    <ListView 
+        android:id="@+id/content_listview" 
         android:layout_width="match_parent" 
         android:layout_height="wrap_content"/>
-
+    <ImageButton 
+	    android:id="@+id/reply" 
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/reply"/>
+	
 </LinearLayout>

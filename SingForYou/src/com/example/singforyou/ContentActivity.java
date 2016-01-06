@@ -43,12 +43,16 @@ public class ContentActivity extends Activity {
 	private ListView mListView;
 	private FloorAdapter mFloorAdapter;
 	private List<Floor> floor_list = new ArrayList<Floor>();
+	private TextView Host_name;
 	private TextView Host_content;
 	private TextView floorName;
 	private TextView singTime;
 	private SeekBar mSeekBar;
-	private ImageButton mImageButton;
-	
+	private ImageButton play;
+	private SimpleDateFormat time = new SimpleDateFormat("m:ss");
+	private String musicId;
+	private String fileName;
+	private ImageButton reply;
 	
 	/////////////////////////////////////////////
 	private static final String url = "http://115.28.70.78/querypost";
@@ -56,104 +60,51 @@ public class ContentActivity extends Activity {
 	private static final String url2 = "http://115.28.70.78/addgood";
 	private Posts post = new Posts();
 	private Button share;
+	private Record record = new Record();
+	private String fileNamePrefix;
 	/////////////////////////////////////////////
-	
-	private SimpleDateFormat time = new SimpleDateFormat("m:ss");
 	Handler handler = new Handler();
 	Runnable r;
 	
-	private MusicService musicService = new MusicService();
-	private ServiceConnection sc = new ServiceConnection() {
-		@Override
-		public void onServiceConnected(ComponentName name, IBinder service) {
-			musicService = ((MusicService.myBinder)service).getService();
-		}
-		@Override
-		public void onServiceDisconnected(ComponentName name) {
-			// TODO 自动生成的方法存根
-			musicService = null;
-		}
-	};
-	private void bindServiceConnection() {
-		Intent intent = new Intent(ContentActivity.this, MusicService.class);
-		bindService(intent,sc,Context.BIND_AUTO_CREATE);
-	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_activity);
-		bindServiceConnection();
 		
+		
+		Host_name = (TextView)findViewById(R.id.HostName);
+		Host_name.setText(post.getPostName());
+		Host_content = (TextView)findViewById(R.id.Host_content);
+		Host_content.setText(post.getContent());
 		
 		mListView = (ListView)findViewById(R.id.content_listview);
-		Host_content = (TextView)findViewById(R.id.Host_content);
-		floorName = (TextView)findViewById(R.id.floorName);
-		singTime = (TextView)findViewById(R.id.singTime);
-		mSeekBar = (SeekBar)findViewById(R.id.seekbar);
-		mImageButton = (ImageButton)findViewById(R.id.btn_play);
-		
-		
-		
 		mFloorAdapter = new FloorAdapter(this,R.layout.content_item, floor_list);
 		mListView.setAdapter(mFloorAdapter);
 		
-		r = new Runnable() {
-
-			@Override
-			public void run() {
-				// TODO 自动生成的方法存根
-				singTime.setText(time.format(musicService.mp.getCurrentPosition())+"/"+time.format(musicService.mp.getDuration()));
-				mSeekBar.setProgress(musicService.mp.getCurrentPosition());
-				mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-					
-					@Override
-					public void onStopTrackingTouch(SeekBar seekBar) {
-						// TODO 自动生成的方法存根
-						
-					}
-					
-					@Override
-					public void onStartTrackingTouch(SeekBar seekBar) {
-						// TODO 自动生成的方法存根
-						
-					}
-					
-					@Override
-					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-						// TODO 自动生成的方法存根
-						if (fromUser) {
-							musicService.mp.seekTo(seekBar.getProgress());
-						}
-					}
-				});
-				handler.postDelayed(r, 100);
-			}
+		reply = (ImageButton)findViewById(R.id.reply);
+		reply.setOnClickListener(new OnClickListener() {
 			
-		};
-		
-		mImageButton.setOnClickListener(new OnClickListener() {
-
 			@Override
-			public void onClick(View arg0) {
-				// TODO 自动生成的方法存根
-				musicService.playorpause();
-				singTime.setText("ok");
-				if (musicService.mp.isPlaying()) {
-					mImageButton.setImageResource(R.drawable.pause);
-				} else {
-					mImageButton.setImageResource(R.drawable.play);
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ContentActivity.this, RecordActivity.class);
+				startActivity(intent);
+				//跳转到录音界面确认保存后，更新服务器和客户端信息，未完成
+				if (true) {
+					int newfloorId = post.getNumOfFloor()+1;
+					int newBelongto = post.getPostID();
+					String newmusicId = newBelongto+"_"+newfloorId;
+					Floor newFloor = new Floor("",LoginActivity.person.getName(),newmusicId,newBelongto,newfloorId);
+					floor_list.add(newFloor);
+					mFloorAdapter.notifyDataSetChanged();
+					
+					post.setNumOfFloor(newfloorId);
+					
 				}
-				singTime.setText(time.format(musicService.mp.getCurrentPosition())+"/"+time.format(musicService.mp.getDuration()));
-				mSeekBar.setProgress(musicService.mp.getCurrentPosition());
-				mSeekBar.setMax(musicService.mp.getDuration());
-				handler.post(r);
 			}
 			
 		});
-		
-		
-		
-		
 		//////////////////////////////////////////////////////////////////////////////
 		//---------------------------------------------------------------------------
 		//以下为获取bundle的数据并且进行查询解析出贴子的主内容 （不包含楼层内容）
@@ -270,6 +221,9 @@ public class ContentActivity extends Activity {
 		/////////////////////////////////////////////////////////////////////////
 		
 	}
+	
+	
+	//为每一个floor设置适配器
 	public class FloorAdapter extends ArrayAdapter<Floor>{ 
 	    private int resource; 
 	    public FloorAdapter(Context context, int resourceId, List<Floor> objects) { 
@@ -279,21 +233,96 @@ public class ContentActivity extends Activity {
 	    }
 
 	    public View getView(int position, View convertView, ViewGroup parent) { 
-	        LinearLayout ContactListView; 
+	        LinearLayout FloorListView; 
 	        // 获取数据 
-	        Floor file = getItem(position); 
+	        Floor floor = getItem(position); 
 	        if(convertView == null) { 
-	            ContactListView = new LinearLayout(getContext()); 
+	            FloorListView = new LinearLayout(getContext()); 
 	            LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-	            inflater.inflate(resource, ContactListView, true);//把布局解析到LinearLayout里面 
+	            inflater.inflate(resource, FloorListView, true);//把布局解析到LinearLayout里面 
 	        } else { 
-	            ContactListView = (LinearLayout)convertView; 
+	            FloorListView = (LinearLayout)convertView; 
 	        }
 
 	        // 获取控件,填充数据 
-	        TextView tView1 = (TextView) ContactListView.findViewById(R.id.floorName);
-	        tView1.setText(file.getHostName()); 
-	        return ContactListView; 
+	        floorName = (TextView)FloorListView.findViewById(R.id.floorName);
+			singTime = (TextView)FloorListView.findViewById(R.id.singTime);
+			mSeekBar = (SeekBar)FloorListView.findViewById(R.id.seekbar);
+			play = (ImageButton)FloorListView.findViewById(R.id.btn_play);
+			
+			musicId = floor.getMusicID();
+			floorName.setText(floor.getHostName()); 
+			//设置进度条
+			handler = new Handler();
+	    	r = new Runnable() {
+
+				@Override
+				public void run() {
+					// TODO 自动生成的方法存根
+					singTime.setText(time.format(record.mediaPlayer.getCurrentPosition())+"/"+time.format(record.mediaPlayer.getDuration()));
+					mSeekBar.setProgress(record.mediaPlayer.getCurrentPosition());
+					mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+						
+						@Override
+						public void onStopTrackingTouch(SeekBar seekBar) {
+							// TODO 自动生成的方法存根
+							
+						}
+						
+						@Override
+						public void onStartTrackingTouch(SeekBar seekBar) {
+							// TODO 自动生成的方法存根
+							
+						}
+						
+						@Override
+						public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+							// TODO 自动生成的方法存根
+							if (fromUser) {
+								record.mediaPlayer.seekTo(seekBar.getProgress());
+							}
+						}
+					});
+					handler.postDelayed(r, 100);
+				}
+				
+			};
+	    	
+	    	//点击播放按钮
+	        play.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					// TODO 自动生成的方法存根
+					//获取路径
+					record.init();
+			        fileNamePrefix = ContentActivity.this.getExternalFilesDir(null).toString() + "/";
+			        fileName = fileNamePrefix + musicId + ".3gp";
+			        if ( !record.isSDCardExist() ) {
+			            Log.e("Record", "SD card does not exist!");
+			        }
+			        
+					singTime.setText("ok");
+					//这里获取播放的音频
+					if (record.mediaPlayer.isPlaying()) {
+						play.setImageResource(R.drawable.pause);
+						record.mediaPlayer.pause();
+					} else {
+						play.setImageResource(R.drawable.play);
+						if (record.mediaPlayer != null)
+							record.mediaPlayer.start();
+						else
+							record.startPlaying(fileName);
+					}
+					singTime.setText(time.format(record.mediaPlayer.getCurrentPosition())+"/"+time.format(record.mediaPlayer.getDuration()));
+					mSeekBar.setProgress(record.mediaPlayer.getCurrentPosition());
+					mSeekBar.setMax(record.mediaPlayer.getDuration());
+					handler.post(r);
+				}
+				
+			});
+	        
+	        return FloorListView; 
 	    }
 	}
 	

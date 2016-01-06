@@ -114,15 +114,7 @@ public class Record {
         }
     }
 
-    public double getAmplitude() {
-        if ( recorder != null )
-            return  ( recorder.getMaxAmplitude() / 2700.0 );
-        else
-            return 0;
-
-    }
-
-    private MediaPlayer mediaPlayer = null;
+    public MediaPlayer mediaPlayer = null;
     public void startPlaying(String path) {
         mediaPlayer = new MediaPlayer();
         try {
