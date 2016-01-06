@@ -2,6 +2,7 @@ package com.example.singforyou;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Handler;
 
 import android.os.Bundle;
@@ -19,6 +20,7 @@ public class RecordActivity extends Activity {
     String fileName;
     int id = 1;
     private ProgressDialog progressDialog;
+    boolean isRecord = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class RecordActivity extends Activity {
                             });
                             Log.e("upload", id + "");
                             id += 1;
+                            isRecord = true;
                         } catch (Exception e) {
                             e.printStackTrace();
                             RecordActivity.this.runOnUiThread(new Runnable() {
@@ -151,5 +154,13 @@ public class RecordActivity extends Activity {
         super.onPause();
         record.stopRecording();
         record.stopPlaying();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Intent intent = this.getIntent();
+        intent.putExtra("isRecord", isRecord);
+        setResult(RESULT_OK, intent);
+        super.onDestroy();
     }
 }

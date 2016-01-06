@@ -89,9 +89,12 @@ public class ContentActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ContentActivity.this, RecordActivity.class);
-				startActivity(intent);
-				//Ìø×ªµ½Â¼Òô½çÃæÈ·ÈÏ±£´æºó£¬¸üÐÂ·þÎñÆ÷ºÍ¿Í»§¶ËÐÅÏ¢£¬Î´Íê³É
-				if (true) {
+				//startActivity(intent);
+				startActivityForResult(intent, RESULT_OK);
+				Boolean isRecord = intent.getBooleanExtra("isRecord", false);
+				Log.e("record", isRecord + "");
+				//ï¿½ï¿½×ªï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½Ï±ï¿½ï¿½ï¿½ó£¬¸ï¿½ï¿½Â·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¿Í»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Î´ï¿½ï¿½ï¿½
+				if ( isRecord ) {
 					int newfloorId = post.getNumOfFloor()+1;
 					int newBelongto = post.getPostID();
 					String newmusicId = newBelongto+"_"+newfloorId;
@@ -107,7 +110,7 @@ public class ContentActivity extends Activity {
 		});
 		//////////////////////////////////////////////////////////////////////////////
 		//---------------------------------------------------------------------------
-		//ÒÔÏÂÎª»ñÈ¡bundleµÄÊý¾Ý²¢ÇÒ½øÐÐ²éÑ¯½âÎö³öÌù×ÓµÄÖ÷ÄÚÈÝ £¨²»°üº¬Â¥²ãÄÚÈÝ£©
+		//ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½È¡bundleï¿½ï¿½ï¿½ï¿½ï¿½Ý²ï¿½ï¿½Ò½ï¿½ï¿½Ð²ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¥ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½
 		Intent intent = getIntent();
 		final String PID = intent.getStringExtra("PID");
 		new Thread(new Runnable() {
@@ -137,7 +140,7 @@ public class ContentActivity extends Activity {
         	        post = parsePostWithPull(response.toString());
         	        
         	        
-        	        //ÒÔÏÂÎª¶ÔÂ¥²ã½øÐÐxml»ñÈ¡
+        	        //ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Â¥ï¿½ï¿½ï¿½ï¿½ï¿½xmlï¿½ï¿½È¡
         	        connection = (HttpURLConnection)((new URL(url1.toString()).openConnection()));
         			connection.setRequestMethod("POST");
         	        connection.setConnectTimeout(40000);
@@ -223,28 +226,28 @@ public class ContentActivity extends Activity {
 	}
 	
 	
-	//ÎªÃ¿Ò»¸öfloorÉèÖÃÊÊÅäÆ÷
+	//ÎªÃ¿Ò»ï¿½ï¿½floorï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public class FloorAdapter extends ArrayAdapter<Floor>{ 
 	    private int resource; 
 	    public FloorAdapter(Context context, int resourceId, List<Floor> objects) { 
 	        super(context, resourceId, objects); 
-	        // ¼ÇÂ¼ÏÂÀ´ÉÔºóÊ¹ÓÃ 
+	        // ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½Ê¹ï¿½ï¿½ 
 	        resource = resourceId; 
 	    }
 
 	    public View getView(int position, View convertView, ViewGroup parent) { 
 	        LinearLayout FloorListView; 
-	        // »ñÈ¡Êý¾Ý 
+	        // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ 
 	        Floor floor = getItem(position); 
 	        if(convertView == null) { 
 	            FloorListView = new LinearLayout(getContext()); 
 	            LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-	            inflater.inflate(resource, FloorListView, true);//°Ñ²¼¾Ö½âÎöµ½LinearLayoutÀïÃæ 
+	            inflater.inflate(resource, FloorListView, true);//ï¿½Ñ²ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½LinearLayoutï¿½ï¿½ï¿½ï¿½ 
 	        } else { 
 	            FloorListView = (LinearLayout)convertView; 
 	        }
 
-	        // »ñÈ¡¿Ø¼þ,Ìî³äÊý¾Ý 
+	        // ï¿½ï¿½È¡ï¿½Ø¼ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 	        floorName = (TextView)FloorListView.findViewById(R.id.floorName);
 			singTime = (TextView)FloorListView.findViewById(R.id.singTime);
 			mSeekBar = (SeekBar)FloorListView.findViewById(R.id.seekbar);
@@ -252,32 +255,32 @@ public class ContentActivity extends Activity {
 			
 			musicId = floor.getMusicID();
 			floorName.setText(floor.getHostName()); 
-			//ÉèÖÃ½ø¶ÈÌõ
+			//ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½
 			handler = new Handler();
 	    	r = new Runnable() {
 
 				@Override
 				public void run() {
-					// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+					// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					singTime.setText(time.format(record.mediaPlayer.getCurrentPosition())+"/"+time.format(record.mediaPlayer.getDuration()));
 					mSeekBar.setProgress(record.mediaPlayer.getCurrentPosition());
 					mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 						
 						@Override
 						public void onStopTrackingTouch(SeekBar seekBar) {
-							// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+							// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 							
 						}
 						
 						@Override
 						public void onStartTrackingTouch(SeekBar seekBar) {
-							// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+							// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 							
 						}
 						
 						@Override
 						public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-							// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+							// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 							if (fromUser) {
 								record.mediaPlayer.seekTo(seekBar.getProgress());
 							}
@@ -288,13 +291,13 @@ public class ContentActivity extends Activity {
 				
 			};
 	    	
-	    	//µã»÷²¥·Å°´Å¥
+	    	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å°ï¿½Å¥
 	        play.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
-					// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
-					//»ñÈ¡Â·¾¶
+					// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					//ï¿½ï¿½È¡Â·ï¿½ï¿½
 					record.init();
 			        fileNamePrefix = ContentActivity.this.getExternalFilesDir(null).toString() + "/";
 			        fileName = fileNamePrefix + musicId + ".3gp";
@@ -303,7 +306,7 @@ public class ContentActivity extends Activity {
 			        }
 			        
 					singTime.setText("ok");
-					//ÕâÀï»ñÈ¡²¥·ÅµÄÒôÆµ
+					//ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½Æµ
 					if (record.mediaPlayer.isPlaying()) {
 						play.setImageResource(R.drawable.pause);
 						record.mediaPlayer.pause();
