@@ -144,7 +144,7 @@ public final class R {
     public static final class id {
         public static final int HostName=0x7f080004;
         public static final int Host_content=0x7f080006;
-        public static final int Wname=0x7f080035;
+        public static final int Wname=0x7f080036;
         public static final int accounts=0x7f080019;
         public static final int auto_save_password=0x7f08001c;
         public static final int btn_play=0x7f08000b;
@@ -175,7 +175,7 @@ public final class R {
         public static final int mentionactivity_textView1=0x7f080028;
         public static final int mentionactivity_title=0x7f080027;
         public static final int moreactivity_listView1=0x7f08002c;
-        public static final int name=0x7f080036;
+        public static final int name=0x7f080035;
         public static final int password=0x7f08001a;
         public static final int person_add=0x7f080033;
         public static final int person_mail=0x7f080032;

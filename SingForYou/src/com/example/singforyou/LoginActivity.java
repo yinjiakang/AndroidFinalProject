@@ -49,7 +49,7 @@ public class LoginActivity extends Activity {
 				String password = Login_password.getText().toString();
 				
 				String currenturl = "http://115.28.70.78/login";
-				String query = "account=" + account + "&password" + password;
+				String query = "account=" + account + "&password=" + password;
 				
 				String result = ConnectToUrl(currenturl, query);
 				
