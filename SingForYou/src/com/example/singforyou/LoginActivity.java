@@ -12,15 +12,11 @@ import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-
 import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.Loader;
-import android.database.CursorJoiner.Result;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,13 +27,10 @@ import android.widget.Toast;
 public class LoginActivity extends Activity {
 	public static Person person = new Person();
 	public static ArrayList<Posts> all_posts = new ArrayList<Posts>();
-	static ArrayList<Posts> all_good_posts = new ArrayList<Posts>();
-	static ArrayList<Posts> all_my_posts = new ArrayList<Posts>();
+	public static ArrayList<Posts> all_good_posts = new ArrayList<Posts>();
+	public static ArrayList<Posts> all_my_posts = new ArrayList<Posts>();
 	HttpURLConnection connection = null;
 	DataOutputStream out;
-	String result;
-	Handler handler;
-	Thread thread;
 	InputStream in;
 	private Button Login_TurnToRegister, Login_LoginBtn;
 	private EditText Login_accounts, Login_password;
@@ -50,54 +43,70 @@ public class LoginActivity extends Activity {
 		Login_accounts = (EditText) findViewById(R.id.accounts);
 		Login_password = (EditText) findViewById(R.id.password);
 		
-		handler = new Handler() {
-			public void handleMessage(Message message) {
-				switch (message.what) {
-				case 1:
-					
-					result = message.obj.toString();
-					//thread.interrupt();
-					if (result.equals("")) {
-						Toast.makeText(LoginActivity.this, "账号或密码错误", Toast.LENGTH_SHORT).show();
-					} else {
-						Parser_person(result);
-		
-						// 得到所有帖子以及精品贴
-						LoadAllAndGoodPosts();
-						// 得到我的所有帖子
-						LoadMyPosts();
-						Intent intent = new Intent(LoginActivity.this, TiebaActivity.class);
-						startActivity(intent);
-					}
-				case 2:
-					result = message.obj.toString();
-					//thread.interrupt();
-					Parser_allposts(result, 0);
-					Log.v("size all_posts", all_posts.size() + "");
-					Log.v("size all_good_posts", all_good_posts.size() + "");
-				case 3:
-					result = message.obj.toString();
-					//thread.interrupt();
-					Parser_allposts(result, 1);
-					Log.v("size all_posts",all_my_posts.size() + "");
-				default:
-					break;
-				}
-			}
-		};
-		
 		Login_LoginBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				String account = Login_accounts.getText().toString();
 				String password = Login_password.getText().toString();
 				
-				String currenturl = "http://115.28.70.78/login";
-				String query = "account=" + account + "&password=" + password;
+				final String currenturl = "http://115.28.70.78/login";
+				final String query = "account=" + account + "&password=" + password;
+				
+						//ConnectToUrl(currenturl, query);
+				
+				new Thread(new Runnable() {
 
-				result = "";
-				ConnectToUrl(currenturl, query, 1);
-				//thread.start();
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						String result = "";
+						try {
+							connection = (HttpURLConnection)((new URL(currenturl).openConnection()));
+							connection.setRequestMethod("POST");
+							connection.setConnectTimeout(40000);
+							connection.setReadTimeout(40000);
+							
+							out  = new DataOutputStream(connection.getOutputStream());
+							//out.writeBytes("mobileCode="+ phone_number.getText().toString() + "&userID=");
+							out.writeBytes(query);
+							
+							in = connection.getInputStream();
+							BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+							StringBuilder response = new StringBuilder();
+							String line;
+							while ((line = reader.readLine()) != null) {
+								response.append(line);
+							}
+							result = response.toString();
+							// 账号不存在或密码错误
+							if (result.equals("")) {
+								Toast.makeText(LoginActivity.this, "账号或密码错误", Toast.LENGTH_SHORT).show();
+							} else {
+								//Log.w("aa", "1");
+								Parser_person(result);
+								//Log.w("aa", "2");
+								// 得到所有帖子以及精品贴
+								LoadAllAndGoodPosts();
+								//Log.w("aa", "3");
+								// 得到我的所有帖子
+								//LoadMyPosts();
+								//Log.w("aa", "4");
+				
+								/*Intent intent = new Intent(LoginActivity.this, TiebaActivity.class);
+								startActivity(intent);
+*/								
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+							result = "";
+						} finally {
+							if (connection != null) {
+								connection.disconnect();
+							}
+						}
+					}
+					
+				}).start();
 			}
 		});
 		
@@ -110,48 +119,34 @@ public class LoginActivity extends Activity {
 		});
 	}
 	
-	private void ConnectToUrl(final String url, final String content, final int mode) {
-		Log.v("connect", url + " " + content + " " + mode);
-		//thread = 
-		new Thread() {
-			public void run() {
-				try {
-					connection = (HttpURLConnection)((new URL(url).openConnection()));
-					connection.setRequestMethod("POST");
-					connection.setConnectTimeout(1000000000);
-					connection.setReadTimeout(1000000000);
-					
-					out  = new DataOutputStream(connection.getOutputStream());
-					//out.writeBytes("mobileCode="+ phone_number.getText().toString() + "&userID=");
-					out.writeBytes(content);
-					Log.v("mode", mode + "");
-					in = connection.getInputStream();
-					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-					StringBuilder response = new StringBuilder();
-					String line;
-					while ((line = reader.readLine()) != null) {
-						response.append(line);
-					}
-					Log.v("asdsa", response.toString());
-					
-					Message message = new Message();
-					message.what = mode;
-					message.obj = response.toString();
-					handler.sendMessage(message);   
-				} catch (Exception e) {
-					e.printStackTrace();
-					Message message = new Message();
-					message.what = mode;
-					message.obj = "";
-					handler.sendMessage(message); 
-				} finally {
-					if (connection != null) {
-						connection.disconnect();
-					}
-				}
+	/*private String ConnectToUrl(String url, String content) {
+		try {
+			connection = (HttpURLConnection)((new URL(url).openConnection()));
+			connection.setRequestMethod("POST");
+			connection.setConnectTimeout(40000);
+			connection.setReadTimeout(40000);
+			
+			out  = new DataOutputStream(connection.getOutputStream());
+			//out.writeBytes("mobileCode="+ phone_number.getText().toString() + "&userID=");
+			out.writeBytes(content);
+			
+			in = connection.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			StringBuilder response = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				response.append(line);
 			}
-		}.start();;
-	}
+			return response.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		} finally {
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+	}*/
 	
 	private void Parser_person(String xml) {
 		try {
@@ -159,7 +154,7 @@ public class LoginActivity extends Activity {
 			XmlPullParser parser = factory.newPullParser();
 			parser.setInput(new StringReader(xml));
 			int eventType = parser.getEventType();
-			
+			Log.w("aabbb", xml);
 			while (eventType != XmlPullParser.END_DOCUMENT) {
 				switch (eventType) {
 				case XmlPullParser.START_TAG:
@@ -238,7 +233,7 @@ public class LoginActivity extends Activity {
 								all_good_posts.add(newposts);
 							}
 						} else if (mode == 1) {
-							all_my_posts.add(newposts)
+							all_my_posts.add(newposts);
 ;						}
 					}
 				case XmlPullParser.END_TAG:
@@ -258,16 +253,72 @@ public class LoginActivity extends Activity {
 	private void LoadAllAndGoodPosts() {
 		all_posts.clear();
 		all_good_posts.clear();
-		String currenturl = "http://115.28.70.78/queryallposts";
-		
-		ConnectToUrl(currenturl, "getallposts", 2);
-		//thread.start();
+		all_my_posts.clear();
+		final String currenturl = "http://115.28.70.78/queryallposts";
+		//String result = ConnectToUrl(currenturl, "getallposts");
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				String result = "";
+				try {
+					connection = (HttpURLConnection)((new URL(currenturl).openConnection()));
+					connection.setRequestMethod("POST");
+					connection.setConnectTimeout(40000);
+					connection.setReadTimeout(40000);
+					
+					out  = new DataOutputStream(connection.getOutputStream());
+					//out.writeBytes("mobileCode="+ phone_number.getText().toString() + "&userID=");
+					out.writeBytes("getallposts");
+					
+					in = connection.getInputStream();
+					BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+					StringBuilder response = new StringBuilder();
+					String line;
+					while ((line = reader.readLine()) != null) {
+						response.append(line);
+					}
+					result = response.toString();
+					Parser_allposts(result, 0);
+					
+					connection = (HttpURLConnection)((new URL("http://115.28.70.78/querymyposts").openConnection()));
+					connection.setRequestMethod("POST");
+					connection.setConnectTimeout(40000);
+					connection.setReadTimeout(40000);
+					
+					out  = new DataOutputStream(connection.getOutputStream());
+					//out.writeBytes("mobileCode="+ phone_number.getText().toString() + "&userID=");
+					out.writeBytes("account=" + person.getAccount());
+					
+					in = connection.getInputStream();
+					reader = new BufferedReader(new InputStreamReader(in));
+					response = new StringBuilder();
+					while ((line = reader.readLine()) != null) {
+						response.append(line);
+					}
+					result = response.toString();
+					Parser_allposts(result, 1);
+					
+					Intent intent = new Intent(LoginActivity.this, TiebaActivity.class);
+					startActivity(intent);
+				} catch (Exception e) {
+					e.printStackTrace();
+					result = "";
+				} finally {
+					if (connection != null) {
+						connection.disconnect();
+					}
+				}
+			}
+			
+		}).start();
 	}
 	
-	private void LoadMyPosts() {
+	/*private void LoadMyPosts() {
 		all_my_posts.clear();
 		String currenturl = "http://115.28.70.78/querymyposts";
-		ConnectToUrl(currenturl, "account=" + person.getAccount(), 3);
-		//thread.start();
-	}
+		String result = ConnectToUrl(currenturl, "account=" + person.getAccount());
+		Parser_allposts(result, 1);
+	}*/
 }

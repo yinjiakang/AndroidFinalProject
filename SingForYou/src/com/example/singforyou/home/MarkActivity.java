@@ -37,6 +37,8 @@ public class MarkActivity extends Activity {
 	private ProgressDialog mydialog;
 	private FrameLayout mContent;
 	private int isStart = 0;
+	private Posts post;
+	Thread t;
 	
 	private static final String url = "http://115.28.70.78/newpost";
 	
@@ -56,6 +58,26 @@ public class MarkActivity extends Activity {
 		isStart = 1;
 	}
 	
+	private static final int UPDATE_CONTENT = 0;
+	private Handler handler = new Handler() {
+	    public void handleMessage(Message message) {
+	    	t.interrupt();
+	    	switch (message.what) {
+	    	case UPDATE_CONTENT:
+	    		//content.setText(message.obj.toString());
+	    		LoginActivity.all_posts.add(post);
+	    		LoginActivity.all_my_posts.add(post);
+				Intent intent = new Intent(MarkActivity.this, TiebaActivity.class);
+				startActivity(intent);
+				finish();
+	    		break;
+	    	default:
+	    		break;
+	    	}
+	    }
+	};
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,11 +92,13 @@ public class MarkActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Posts post = new Posts(LoginActivity.person.getAccount(), edtitle.toString(), edcon.toString(), LoginActivity.person.getName(), 0, 0, 0);
+				post = new Posts(LoginActivity.person.getAccount(), edtitle.getText().toString(), edcon.getText().toString(), LoginActivity.person.getName(), 0, 0, 0);
 				//List<Posts> l;
 				//l.add(post);
 				//传递数值给佳鹏
-				new Thread(new Runnable() {
+				
+				
+				t = new Thread(new Runnable() {
 
 					@Override
 					public void run() {
@@ -89,7 +113,7 @@ public class MarkActivity extends Activity {
 		        	        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
 		        	        
 		        	        //out.writeBytes("mobileCode=" + pNumber.getText().toString() + "&userID=");
-		        	        out.writeBytes("pac=" +  LoginActivity.person.getAccount() + "&ptitle=" + edtitle.toString() + "&pcontent=" + edcon.toString() + "&pname=" + LoginActivity.person.getName() + "&pid=" + "0" + "&nof=" + "0" + "&isgood=" + "0");
+		        	        out.writeBytes("pac=" +  LoginActivity.person.getAccount() + "&ptitle=" + edtitle.getText().toString() + "&pcontent=" + edcon.getText().toString() + "&pname=" + LoginActivity.person.getName() + "&pid=" + "0" + "&nof=" + "0" + "&isgood=" + "0");
 		        	        
 		        	        InputStream in = connection.getInputStream();
 		        	        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -100,7 +124,11 @@ public class MarkActivity extends Activity {
 		        	        	response.append(line);
 		        	        }
 		        	        
-		        	        
+		        	        Message message = new Message();
+		        	        message.what = UPDATE_CONTENT;
+		        	        Log.w("aaa", response.toString());
+		        	        message.obj = response.toString();
+		        	        handler.handleMessage(message);
 		    			} catch (Throwable e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -111,11 +139,8 @@ public class MarkActivity extends Activity {
 		    			}
 					}
 					
-				}).start();
-				LoginActivity.all_posts.add(post);
-				Intent intent = new Intent(MarkActivity.this, TiebaActivity.class);
-				startActivity(intent);
-				finish();
+				});
+				t.start();
 				//mContent.addView(MarkActivity.this.startActivity(intent).getDecorView());
 				//Dialog();
 			}

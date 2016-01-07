@@ -17,7 +17,6 @@ public class RecordActivity extends Activity {
     private Record record = new Record();
     String fileNamePrefix;
     String fileName;
-    int id = 1;
     private ProgressDialog progressDialog;
 
     @Override
@@ -53,7 +52,6 @@ public class RecordActivity extends Activity {
                                 }
                             });
                             Log.e("upload", id + "");
-                            id += 1;
                         } catch (Exception e) {
                             e.printStackTrace();
                             RecordActivity.this.runOnUiThread(new Runnable() {
@@ -107,41 +105,38 @@ public class RecordActivity extends Activity {
             }
         });
 
-        Button download = (Button) findViewById(R.id.download);
-        download.setOnClickListener(new View.OnClickListener() {
+        /* Download
+        fileName = fileNamePrefix + id + ".3gp";
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public void onClick(View v) {
-                fileName = fileNamePrefix + "1.3gp";
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            //Log.e("before", "before");
-                            record.download(fileName, 1);
-                            RecordActivity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    progressDialog.dismiss();
-                                }
-                            });
-                            record.startPlaying(fileName);
-                            //Log.e("after", "after");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            RecordActivity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    progressDialog.dismiss();
-                                }
-                            });
+            public void run() {
+                try {
+                    //Log.e("before", "before");
+                    record.download(fileName, id);
+                    RecordActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
                         }
-                    }
-                });
-                thread.start();
-
-                progressDialog = ProgressDialog.show(RecordActivity.this, "Downloading", "Please wait...");
+                    });
+                    record.startPlaying(fileName);
+                    //Log.e("after", "after");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    RecordActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                        }
+                    });
+                }
             }
         });
+        thread.start();
+
+        progressDialog = ProgressDialog.show(RecordActivity.this, "Downloading", "Please wait...");
+        */
+
 
 
     }

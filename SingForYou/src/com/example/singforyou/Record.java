@@ -31,22 +31,22 @@ public class Record {
         conn = new SCSClient(credentials);
     }
 
-    public void upload(String path, int id) {
+    public void upload(String path, String id) {
         File localFile = new File(path);
         if ( localFile.exists() ){
-            conn.putObject("record", "" + id, localFile);
+            conn.putObject("record", id, localFile);
         } else {
             Log.e("Upload", "Failed to upload the file");
         }
     };
 
-    public void download(String path, int id) {
+    public void download(String path, String id) {
         File destFile = new File(path);
         if ( destFile.exists() ) {
             return;
         }
 
-        S3Object s3Obj = conn.getObject("record", "" + id);
+        S3Object s3Obj = conn.getObject("record", id);
         InputStream in = s3Obj.getObjectContent();
         byte[] buf = new byte[1024];
         OutputStream out = null;
