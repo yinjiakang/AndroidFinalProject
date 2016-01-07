@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -54,7 +55,7 @@ public class SignupActivity extends Activity {
 				final String name = Signup_name.getText().toString(); 
 				
 				final String currenturl = "http://115.28.70.78/signup";
-				final String query = "account=" + account + "&password=" + password + "&name=" + name
+				final String query = "account=" + account + "&password=" + password + "&name=" + URLEncoder.encode(name)
 						+ "&singtime=8&exvalue=0";
 				Log.v("aa", "1");
 				new Thread() {

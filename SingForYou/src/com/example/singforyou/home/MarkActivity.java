@@ -6,9 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 import com.example.singforyou.*;
 
@@ -111,9 +113,10 @@ public class MarkActivity extends Activity {
 		        	        connection.setReadTimeout(40000);
 		        	        
 		        	        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-		        	        
 		        	        //out.writeBytes("mobileCode=" + pNumber.getText().toString() + "&userID=");
-		        	        out.writeBytes("pac=" +  LoginActivity.person.getAccount() + "&ptitle=" + edtitle.getText().toString() + "&pcontent=" + edcon.getText().toString() + "&pname=" + LoginActivity.person.getName() + "&pid=" + "0" + "&nof=" + "0" + "&isgood=" + "0");
+		        	        Log.w("iiiiii", URLEncoder.encode(edtitle.getText().toString()));
+		        	        Log.w("iiiiii", URLEncoder.encode(edcon.getText().toString()));	
+		        	        out.writeBytes("pac=" +  LoginActivity.person.getAccount() + "&ptitle=" + URLEncoder.encode(edtitle.getText().toString()) + "&pcontent=" + URLEncoder.encode(edcon.getText().toString()) + "&pname=" + URLEncoder.encode(LoginActivity.person.getName()) + "&pid=" + "0" + "&nof=" + "0" + "&isgood=" + "0");
 		        	        
 		        	        InputStream in = connection.getInputStream();
 		        	        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
