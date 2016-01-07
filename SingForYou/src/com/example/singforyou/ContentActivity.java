@@ -58,8 +58,9 @@ public class ContentActivity extends Activity {
 	private static final String url = "http://115.28.70.78/querypost";
 	private static final String url1 = "http://115.28.70.78/queryfloor";
 	private static final String url2 = "http://115.28.70.78/addgood";
+	private static final String url3 = "http://115.28.70.78/addfloor";
 	private Posts post = new Posts();
-	private Button share;
+	private Button share, return_btn;
 	private Record record = new Record();
 	private String fileNamePrefix;
 	/////////////////////////////////////////////
@@ -95,11 +96,53 @@ public class ContentActivity extends Activity {
 					int newfloorId = post.getNumOfFloor()+1;
 					int newBelongto = post.getPostID();
 					String newmusicId = newBelongto+"_"+newfloorId;
-					Floor newFloor = new Floor("",LoginActivity.person.getName(),newmusicId,newBelongto,newfloorId);
+					final Floor newFloor = new Floor("",LoginActivity.person.getName(),newmusicId,newBelongto,newfloorId);
 					floor_list.add(newFloor);
 					mFloorAdapter.notifyDataSetChanged();
 					
 					post.setNumOfFloor(newfloorId);
+					
+					
+					
+					new Thread(new Runnable() {
+
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							HttpURLConnection connection = null;
+			    			try {
+			        			connection = (HttpURLConnection)((new URL(url3.toString()).openConnection()));
+			        			connection.setRequestMethod("POST");
+			        	        connection.setConnectTimeout(40000);
+			        	        connection.setReadTimeout(40000);
+			        	        
+			        	        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+			        	        
+			        	        //out.writeBytes("mobileCode=" + pNumber.getText().toString() + "&userID=");
+			        	        out.writeBytes("fid=" + newFloor.getFloorID() + "&bto=" + newFloor.getBelongTo() + "&fcontent=" + newFloor.getContent() + "&hostname=" + newFloor.getHostName() + "&mid=" + newFloor.getMusicID()); 
+			        	        InputStream in = connection.getInputStream();
+			        	        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			        	        StringBuilder response = new StringBuilder();
+			        	        
+			        	        String line;
+			        	        while ((line = reader.readLine()) != null) {
+			        	        	response.append(line);
+			        	        }
+			        	        
+			        	        
+			    			} catch (Throwable e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} finally {
+			    				if (connection != null) {
+			        				connection.disconnect();
+			        			}
+			    			}
+						}
+						
+					}).start();
+					
+					
 					
 				}
 			}
@@ -125,6 +168,7 @@ public class ContentActivity extends Activity {
         	        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
         	        
         	        //out.writeBytes("mobileCode=" + pNumber.getText().toString() + "&userID=");
+        	        Log.w("h1", PID);
         	        out.writeBytes("pid=" + PID); 
         	        InputStream in = connection.getInputStream();
         	        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -151,6 +195,7 @@ public class ContentActivity extends Activity {
         	        while ((line = reader.readLine()) != null) {
         	        	response1.append(line);
         	        }
+        	        Log.w("hhhhhhhaaaaaaaaa", response.toString());
         	        floor_list = parseFloorWithPull(response1.toString());
         	        
     			} catch (Throwable e) {
@@ -165,8 +210,17 @@ public class ContentActivity extends Activity {
 			
 		}).start();
 		
+		return_btn = (Button) findViewById(R.id.button1);
 		
-		
+		return_btn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(ContentActivity.this, TiebaActivity.class);
+				startActivity(intent);
+			}
+		});
 		
 		share = (Button)findViewById(R.id.contentactivity_button);
 		share.setOnClickListener(new View.OnClickListener() {
@@ -342,17 +396,17 @@ public class ContentActivity extends Activity {
 				case XmlPullParser.START_TAG:
 					if ("pid".equals(parser.getName())) {
 						p.setPostID(Integer.parseInt(parser.nextText()));
-					} else if ("pac".equals(parser.getName())) {
+					} else if ("PACCOUNT".equals(parser.getName())) {
 						p.setPostAccount(parser.nextText());
-					} else if ("ptitle".equals(parser.getName())) {
+					} else if ("PTITLE".equals(parser.getName())) {
 						p.setPostTitle(parser.nextText());
-					} else if ("pcontent".equals(parser.getName())) {
+					} else if ("PCONTENT".equals(parser.getName())) {
 						p.setContent(parser.nextText());
-					} else if ("nof".equals(parser.getName())) {
+					} else if ("NOF".equals(parser.getName())) {
 						p.setNumOfFloor(Integer.parseInt(parser.nextText()));
-					} else if ("isgood".equals(parser.getName())) {
+					} else if ("ISGOOD".equals(parser.getName())) {
 						p.setIsGood(Integer.parseInt(parser.nextText()));
-					} else if ("pname".equals(parser.getName())) {
+					} else if ("PNAME".equals(parser.getName())) {
 						p.setPostName(parser.nextText());
 					}
 					break;
@@ -388,15 +442,15 @@ public class ContentActivity extends Activity {
 			while (eventType != XmlPullParser.END_DOCUMENT) {
 				switch (eventType) {
 				case XmlPullParser.START_TAG:
-					if ("fid".equals(parser.getName())) {
+					if ("FID".equals(parser.getName())) {
 						FId = Integer.parseInt(parser.nextText());
-					} else if ("bto".equals(parser.getName())) {
+					} else if ("BTO".equals(parser.getName())) {
 						BTo = Integer.parseInt(parser.nextText());
-					} else if ("fcontent".equals(parser.getName())) {
+					} else if ("FCONTENT".equals(parser.getName())) {
 						FContent = parser.nextText();
-					} else if ("hostname".equals(parser.getName())) {
+					} else if ("HOSTNAME".equals(parser.getName())) {
 						HostName = parser.nextText();
-					} else if ("mid".equals(parser.getName())) {
+					} else if ("MID".equals(parser.getName())) {
 						MId = parser.nextText();
 						f.add(new Floor(FContent, HostName, MId, BTo, FId));
 					}
