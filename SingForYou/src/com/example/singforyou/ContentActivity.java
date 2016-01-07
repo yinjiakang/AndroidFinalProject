@@ -41,8 +41,9 @@ import android.widget.TextView;
 
 public class ContentActivity extends Activity {
 	private ListView mListView;
-	private FloorAdapter mFloorAdapter;
-	private List<Floor> floor_list = new ArrayList<Floor>();
+	public static FloorAdapter mFloorAdapter;
+	public static Floor newFloor;
+	public static List<Floor> floor_list = new ArrayList<Floor>();
 	private TextView Host_name;
 	private TextView Host_content;
 	private TextView floorName;
@@ -61,13 +62,29 @@ public class ContentActivity extends Activity {
 	private static final String url3 = "http://115.28.70.78/addfloor";
 	private Posts post = new Posts();
 	private Button share, return_btn;
-	private Record record = new Record();
+	
 	private String fileNamePrefix;
 	/////////////////////////////////////////////
-	Handler handler = new Handler();
+	Handler handler = new Handler() {
+		public void handleMessage(Message msg) {   
+            switch (msg.what) {   
+                 case 1:   
+                	 Host_name.setText(post.getPostName());
+                     Host_content.setText(post.getContent());
+                     if (floor_list.size() != 0) {
+             			mFloorAdapter = new FloorAdapter(ContentActivity.this,R.layout.content_item, floor_list);
+             			mListView.setAdapter(mFloorAdapter);
+             		}
+                     break;
+                 default:
+                	 break;
+            }   
+            super.handleMessage(msg);   
+       }   
+		
+	};
 	Runnable r;
 	
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,13 +92,10 @@ public class ContentActivity extends Activity {
 		
 		
 		Host_name = (TextView)findViewById(R.id.HostName);
-		Host_name.setText(post.getPostName());
 		Host_content = (TextView)findViewById(R.id.Host_content);
-		Host_content.setText(post.getContent());
-		
+
 		mListView = (ListView)findViewById(R.id.content_listview);
-		mFloorAdapter = new FloorAdapter(this,R.layout.content_item, floor_list);
-		mListView.setAdapter(mFloorAdapter);
+		
 		
 		reply = (ImageButton)findViewById(R.id.reply);
 		reply.setOnClickListener(new OnClickListener() {
@@ -90,21 +104,19 @@ public class ContentActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(ContentActivity.this, RecordActivity.class);
+				Bundle bundle = new Bundle();
+				int newfloorId = post.getNumOfFloor()+1;
+				int newBelongto = post.getPostID();
+
+				bundle.putInt("floor", newfloorId);
+				bundle.putInt("post", newBelongto);
+				
+				intent.putExtras(bundle);
 				startActivity(intent);
-				//跳转到录音界面确认保存后，更新服务器和客户端信息，未完成
-				if (true) {
-					int newfloorId = post.getNumOfFloor()+1;
-					int newBelongto = post.getPostID();
-					String newmusicId = newBelongto+"_"+newfloorId;
-					final Floor newFloor = new Floor("",LoginActivity.person.getName(),newmusicId,newBelongto,newfloorId);
-					floor_list.add(newFloor);
-					mFloorAdapter.notifyDataSetChanged();
-					
-					post.setNumOfFloor(newfloorId);
-					
-					
-					
-					new Thread(new Runnable() {
+				
+				post.setNumOfFloor(newfloorId);
+				
+				new Thread(new Runnable() {
 
 						@Override
 						public void run() {
@@ -144,10 +156,11 @@ public class ContentActivity extends Activity {
 					
 					
 					
-				}
+				
 			}
 			
 		});
+		
 		//////////////////////////////////////////////////////////////////////////////
 		//---------------------------------------------------------------------------
 		//以下为获取bundle的数据并且进行查询解析出贴子的主内容 （不包含楼层内容）
@@ -197,7 +210,9 @@ public class ContentActivity extends Activity {
         	        }
         	        Log.w("hhhhhhhaaaaaaaaa", response.toString());
         	        floor_list = parseFloorWithPull(response1.toString());
-        	        
+        	        Message mes = new Message();
+        	        mes.what = 1;
+        	        handler.sendMessage(mes);
     			} catch (Throwable e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -305,9 +320,11 @@ public class ContentActivity extends Activity {
 			play = (ImageButton)FloorListView.findViewById(R.id.btn_play);
 			
 			musicId = floor.getMusicID();
-			floorName.setText(floor.getHostName()); 
+			floorName.setText(floor.getHostName());
+			
+			final Record record = new Record();
+			record.init();
 			//设置进度条
-			handler = new Handler();
 	    	r = new Runnable() {
 
 				@Override
@@ -341,7 +358,15 @@ public class ContentActivity extends Activity {
 				}
 				
 			};
-	    	
+	    	/*download函数崩了
+	    	 *点击播放按钮的时候
+	    	 *待完成
+			
+			
+			
+			
+			
+			*/
 	    	//点击播放按钮
 	        play.setOnClickListener(new OnClickListener() {
 
@@ -349,13 +374,15 @@ public class ContentActivity extends Activity {
 				public void onClick(View arg0) {
 					// TODO 自动生成的方法存根
 					//获取路径
-					record.init();
+					
+					
 			        fileNamePrefix = ContentActivity.this.getExternalFilesDir(null).toString() + "/";
 			        fileName = fileNamePrefix + musicId + ".3gp";
+			        record.download(fileName, musicId);
 			        if ( !record.isSDCardExist() ) {
 			            Log.e("Record", "SD card does not exist!");
 			        }
-			        
+			        System.out.println("11111");
 					singTime.setText("ok");
 					//这里获取播放的音频
 					if (record.mediaPlayer.isPlaying()) {
@@ -363,10 +390,12 @@ public class ContentActivity extends Activity {
 						record.mediaPlayer.pause();
 					} else {
 						play.setImageResource(R.drawable.play);
-						if (record.mediaPlayer != null)
+						if (record.mediaPlayer != null) {
 							record.mediaPlayer.start();
-						else
+						} else {
 							record.startPlaying(fileName);
+					
+						}
 					}
 					singTime.setText(time.format(record.mediaPlayer.getCurrentPosition())+"/"+time.format(record.mediaPlayer.getDuration()));
 					mSeekBar.setProgress(record.mediaPlayer.getCurrentPosition());

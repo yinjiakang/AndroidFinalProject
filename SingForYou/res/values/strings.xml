@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">SingForYou</string>
     <string name="home">首页</string>
     <string name="mention">提到我的</string>
@@ -176,7 +177,6 @@
     <string name="image_quality_low_menu">低(节约流量，上传速度快)</string>
     <string name="image_quality_high">高</string>
     <string name="image_quality_mid">中</string>
-   
     <string name="image_quality_low">低</string>
     <string name="font_size_big">大</string>
     <string name="font_size_mid">中</string>
@@ -1358,4 +1358,8 @@
     <string name="check_username">检测用户名</string>
     <string name="name_not_use">恭喜您,该用户名还没有被注册过!</string>
     <string name="input_name">请输入用户名</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
 </resources>
