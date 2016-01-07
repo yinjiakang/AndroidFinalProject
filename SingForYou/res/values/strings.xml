@@ -5,7 +5,7 @@
     <string name="mention">提到我的</string>
     <string name="recommend">推荐</string>
     <string name="info">资料</string>
-    <string name="more">更多</string>
+    <string name="more">我的帖子</string>
     <string name="neterror">您的网络有些问题，请重新试试</string>
     <string name="netTimeout">网络超时！</string>
     <string name="FileWriteError">文件保存失败</string>
@@ -62,7 +62,7 @@
     <string name="about">关于</string>
     <string name="quit">退出</string>
     <string name="alerm_title">提醒</string>
-    <string name="alert_quit_confirm">确认退出百度贴吧？</string>
+    <string name="alert_quit_confirm">确认退出SingForYou？</string>
     <string name="alert_clean_history">确认清除搜索记录？</string>
     <string name="alert_yes_button">确认</string>
     <string name="alert_no_button">取消</string>
@@ -146,8 +146,8 @@
     <string name="video">视频:</string>
     <string name="change">修改</string>
     <string name="person_info">个人资料</string>
-    <string name="bar">吧</string>
-    <string name="remind">提醒</string>
+    <string name="bar">首页</string>
+    <string name="remind">精品区</string>
     <string name="content">内容</string>
     <string name="no_freind">您没有关注任何人</string>
     <string name="update_client">百度贴吧%s发布了！赶快更新版本吧</string>
@@ -1350,15 +1350,11 @@
     <string name="pic_parse_error">图片解析错误</string>
     <string name="nearby">附近</string>
     <string name="upgrade_account">正在升级帐号:%s</string>
-    <string name="comment_my_shuoshuo">评论了我的说说 :</string>
-    <string name="zhuanfa_my_shuoshuo">转发了我的说说 :</string>
-    <string name="reply_my_shuoshuo">回复了我 :</string>
     <string name="gift">送了一个语音祝福给你，赶快听听吧~</string>
     <string name="file">[文件]</string>
-    <string name="register_tip">提示 \n带*项为必填项</string>
+    <string name="register_tip">提示 \如成功注册将直接跳转至登陆界面</string>
     <string name="data_more">更多</string>
     <string name="data_load_error">数据加载失败，请重试</string>
-    <string name="input_username_info">不想当无名小卒?起个名字感受贴吧交流的快乐!</string>
     <string name="check_username">检测用户名</string>
     <string name="name_not_use">恭喜您,该用户名还没有被注册过!</string>
     <string name="input_name">请输入用户名</string>
