@@ -30,11 +30,7 @@ public class RecordActivity extends Activity {
         setContentView(R.layout.activity_record);
 
         record.init();
-        fileNamePrefix = RecordActivity.this.getExternalFilesDir(null).toString() + "/";
-
-        if ( !record.isSDCardExist() ) {
-            Log.e("Record", "SD card does not exist!");
-        }
+        fileNamePrefix = RecordActivity.this.getFilesDir() + "/";
 
         final ImageButton confirm = (ImageButton) findViewById(R.id.confirm);
         confirm.setOnClickListener(new View.OnClickListener() {
@@ -156,9 +152,6 @@ public class RecordActivity extends Activity {
 
         progressDialog = ProgressDialog.show(RecordActivity.this, "Downloading", "Please wait...");
         */
-
-
-        
     }
 
     @Override

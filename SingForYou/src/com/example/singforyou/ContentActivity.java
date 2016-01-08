@@ -390,7 +390,7 @@ public class ContentActivity extends Activity {
 					final String MID = mFloor.get(position).getMusicID();
 					Log.w("aaaaaaaaaaaaaaa", MID);
 					
-					fileNamePrefix = ContentActivity.this.getExternalFilesDir(null).toString() + "/";
+					fileNamePrefix = ContentActivity.this.getFilesDir() + "/";
 					fileName = fileNamePrefix + MID + ".3gp";
 			        Thread thread = new Thread(new Runnable() {
 			            @Override
@@ -525,7 +525,7 @@ public class ContentActivity extends Activity {
 					//»ñÈ¡Â·¾¶
 					
 					
-			        fileNamePrefix = ContentActivity.this.getExternalFilesDir(null).toString() + "/";
+			        fileNamePrefix = ContentActivity.this.getFilesDir() + "/";
 			        fileName = fileNamePrefix + musicId + ".3gp";
 			        record.download(fileName, musicId);
 			        if ( !record.isSDCardExist() ) {
