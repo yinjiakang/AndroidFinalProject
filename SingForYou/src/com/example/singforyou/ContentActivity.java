@@ -17,8 +17,10 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import com.example.singforyou.home.LikeActivity.MessageAdapter.messagelistview;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -32,7 +34,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -42,7 +47,7 @@ import android.widget.TextView;
 
 public class ContentActivity extends Activity {
 	private ListView mListView;
-	public static FloorAdapter mFloorAdapter;
+	public static FloorAdapter mFadapter;
 	public static Floor newFloor = new Floor();
 	public static List<Floor> floor_list = new ArrayList<Floor>();
 	private TextView Host_name;
@@ -55,6 +60,7 @@ public class ContentActivity extends Activity {
 	private String musicId;
 	private String fileName;
 	private ImageButton reply;
+	ProgressDialog progressDialog;
 	
 	/////////////////////////////////////////////
 	private static final String url = "http://115.28.70.78/querypost";
@@ -73,8 +79,22 @@ public class ContentActivity extends Activity {
                 	 Host_name.setText(post.getPostName());
                      Host_content.setText(post.getContent());
                      if (floor_list.size() != 0) {
-             			mFloorAdapter = new FloorAdapter(ContentActivity.this,R.layout.content_item, floor_list);
-             			mListView.setAdapter(mFloorAdapter);
+             			//mFloorAdapter = new FloorAdapter(ContentActivity.this,R.layout.content_item, floor_list);
+                    	 Log.w("111111111111", floor_list.size()+"");
+                    	mFadapter = new FloorAdapter(ContentActivity.this, floor_list);
+             			mListView.setAdapter(mFadapter);
+             			Log.w("ccccccc", "ccccccc");
+             			mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            				@Override
+            				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+            					// TODO Auto-generated method stub
+            					Log.w("22222222222", "hhhhhhhhh");
+            					String MID = floor_list.get(arg2).getMusicID();
+            					Log.w("aaaaaaaaaaaaaaa", MID);
+            				}
+            			});
+             			Log.w("cccccc11111c", "ccccccc");
              		}
                      break;
                  default:
@@ -94,6 +114,7 @@ public class ContentActivity extends Activity {
 		
 		Host_name = (TextView)findViewById(R.id.HostName);
 		Host_content = (TextView)findViewById(R.id.Host_content);
+		
 
 		mListView = (ListView)findViewById(R.id.content_listview);
 		
@@ -216,6 +237,8 @@ public class ContentActivity extends Activity {
         	        floor_list = parseFloorWithPull(response1.toString());
         	        Message mes = new Message();
         	        mes.what = 1;
+        	        
+        	       
         	        handler.sendMessage(mes);
     			} catch (Throwable e) {
 					// TODO Auto-generated catch block
@@ -290,19 +313,133 @@ public class ContentActivity extends Activity {
 			}
 		});
 		
+		
+		
+		
 		//---------------------------------------------------------------------
 		/////////////////////////////////////////////////////////////////////////
+		
 		
 	}
 	
 	
+	public class FloorAdapter extends BaseAdapter {
+
+		private List<Floor> mFloor = new ArrayList<Floor>();
+		private Context context;
+		private LayoutInflater layoutInflater;
+		public class Floorlistview {
+			public TextView t1;
+			public TextView t2;
+		}
+		public FloorAdapter(Context context, List<Floor> objects) {
+			this.context = context;
+			layoutInflater = LayoutInflater.from(context);
+			mFloor = objects;
+		}
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return mFloor.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			// TODO Auto-generated method stub
+			Floorlistview flistview = null;
+			if (convertView == null) {
+    			flistview = new Floorlistview();
+    			convertView = layoutInflater.inflate(R.layout.content_item, null);
+    			flistview.t1 = (TextView)convertView.findViewById(R.id.floorName);
+    			flistview.t2 = (TextView)convertView.findViewById(R.id.singTime);
+    			convertView.setTag(flistview);
+    		} else {
+    			flistview = (Floorlistview)convertView.getTag();
+    		}
+			flistview.t1.setText(mFloor.get(position).getHostName());
+			flistview.t2.setText(mFloor.get(position).getContent());
+			Log.w("222211111", "hhhhhhhhh");
+			/*mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					// TODO Auto-generated method stub
+					Log.w("22222222222", "hhhhhhhhh");
+					String MID = mFloor.get(arg2).getMusicID();
+					Log.w("aaaaaaaaaaaaaaa", MID);
+				}
+			});*/
+			play = (ImageButton)convertView.findViewById(R.id.btn_play);
+			play.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					final String MID = mFloor.get(position).getMusicID();
+					Log.w("aaaaaaaaaaaaaaa", MID);
+					
+					fileNamePrefix = ContentActivity.this.getExternalFilesDir(null).toString() + "/";
+					fileName = fileNamePrefix + MID + ".3gp";
+			        Thread thread = new Thread(new Runnable() {
+			            @Override
+			            public void run() {
+			                try {
+			                    //Log.e("before", "before");
+			                	Record record = new Record();
+			                	record.init();
+			                	
+			                    record.download(fileName, MID);
+			                    record.startPlaying(fileName);
+			                    
+			                    ContentActivity.this.runOnUiThread(new Runnable() {
+			                        @Override
+			                        public void run() {
+			                            progressDialog.dismiss();
+			                        }
+			                    });
+			                    record.startPlaying(fileName);
+			                    //Log.e("after", "after");
+			                } catch (Exception e) {
+			                    e.printStackTrace();
+			                    ContentActivity.this.runOnUiThread(new Runnable() {
+			                        @Override
+			                        public void run() {
+			                            progressDialog.dismiss();
+			                        }
+			                    });
+			                }
+			            }
+			        });
+			        thread.start();
+
+			        progressDialog = ProgressDialog.show(ContentActivity.this, "Downloading", "Please wait...");
+				}
+			});
+			return convertView;
+		}
+		
+	}
 	//为每一个floor设置适配器
-	public class FloorAdapter extends ArrayAdapter<Floor>{ 
+	/*public class FloorAdapter extends ArrayAdapter<Floor>{
+		private List<Floor> myfloor = new ArrayList<Floor>();
 	    private int resource; 
 	    public FloorAdapter(Context context, int resourceId, List<Floor> objects) { 
 	        super(context, resourceId, objects); 
 	        // 记录下来稍后使用 
-	        resource = resourceId; 
+	        resource = resourceId;
+	        myfloor = objects;
 	    }
 
 	    public View getView(int position, View convertView, ViewGroup parent) { 
@@ -316,6 +453,12 @@ public class ContentActivity extends Activity {
 	        } else { 
 	            FloorListView = (LinearLayout)convertView; 
 	        }
+	        
+	        
+	
+	      
+	        
+	        
 
 	        // 获取控件,填充数据 
 	        floorName = (TextView)FloorListView.findViewById(R.id.floorName);
@@ -362,16 +505,18 @@ public class ContentActivity extends Activity {
 				}
 				
 			};
-	    	/*download函数崩了
-	    	 *点击播放按钮的时候
-	    	 *待完成
+	    	//download函数崩了
+	    	 //*点击播放按钮的时候
+	    	// *待完成
+	
+			
+	        
+	      
 			
 			
 			
-			
-			
-			*/
 	    	//点击播放按钮
+			
 	        play.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -408,10 +553,10 @@ public class ContentActivity extends Activity {
 				}
 				
 			});
-	        
+			
 	        return FloorListView; 
 	    }
-	}
+	}*/
 	
 	
 	//////////////////////////////////////////////////////////////////

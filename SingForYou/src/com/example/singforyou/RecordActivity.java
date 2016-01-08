@@ -64,7 +64,7 @@ public class RecordActivity extends Activity {
                                     
                                     ContentActivity.newFloor = new Floor("",LoginActivity.person.getName(),id,postId,floorId);
                     				ContentActivity.floor_list.add(ContentActivity.newFloor);
-                    				ContentActivity.mFloorAdapter.notifyDataSetChanged();
+                    				ContentActivity.mFadapter.notifyDataSetChanged();
                     				ContentActivity.post.setNumOfFloor(floorId);
                     				finish();
                                 }

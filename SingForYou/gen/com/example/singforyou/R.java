@@ -142,17 +142,17 @@ public final class R {
         public static final int voice=0x7f020064;
     }
     public static final class id {
-        public static final int HostName=0x7f080004;
-        public static final int Host_content=0x7f080006;
+        public static final int HostName=0x7f080003;
+        public static final int Host_content=0x7f080005;
         public static final int Wname=0x7f080036;
         public static final int accounts=0x7f080019;
         public static final int auto_save_password=0x7f08001c;
         public static final int btn_play=0x7f08000b;
+        public static final int button1=0x7f080008;
         public static final int confirm=0x7f080002;
         public static final int content=0x7f080011;
-        public static final int content_listview=0x7f080007;
-        public static final int contentactivity_button=0x7f080005;
-        public static final int download=0x7f080003;
+        public static final int content_listview=0x7f080006;
+        public static final int contentactivity_button=0x7f080004;
         public static final int floorName=0x7f080009;
         public static final int home_bt_like=0x7f08000f;
         public static final int home_bt_mark=0x7f080010;
@@ -188,7 +188,7 @@ public final class R {
         public static final int radio_person_info=0x7f080021;
         public static final int regist=0x7f08001d;
         public static final int register_btn=0x7f080037;
-        public static final int reply=0x7f080008;
+        public static final int reply=0x7f080007;
         public static final int seekbar=0x7f08000c;
         public static final int signup_return=0x7f080034;
         public static final int singTime=0x7f08000a;
@@ -414,7 +414,7 @@ public final class R {
         public static final int chat_troop=0x7f0601a7;
         public static final int chat_with=0x7f0601a6;
         public static final int check_in=0x7f06044d;
-        public static final int check_username=0x7f06054c;
+        public static final int check_username=0x7f060548;
         public static final int choose_operation=0x7f06037e;
         public static final int choose_uploadfile=0x7f060521;
         public static final int chooseaddr=0x7f060233;
@@ -431,7 +431,6 @@ public final class R {
         public static final int close=0x7f0600c3;
         public static final int close_remind=0x7f0600c2;
         public static final int close_video_and_try_again=0x7f060373;
-        public static final int comment_my_shuoshuo=0x7f060543;
         public static final int common_problem=0x7f0604a6;
         public static final int community=0x7f0604ad;
         public static final int compress=0x7f06039c;
@@ -456,10 +455,10 @@ public final class R {
         public static final int copyright=0x7f0600c5;
         public static final int custom_emotion=0x7f0601bb;
         public static final int data_format=0x7f060443;
-        public static final int data_load_error=0x7f06054a;
+        public static final int data_load_error=0x7f060547;
         public static final int data_loading=0x7f0600d6;
         public static final int data_loading_1=0x7f0600d7;
-        public static final int data_more=0x7f060549;
+        public static final int data_more=0x7f060546;
         public static final int data_too_big=0x7f06006e;
         public static final int day=0x7f0603d9;
         public static final int daybreak=0x7f0603d3;
@@ -583,7 +582,7 @@ public final class R {
         public static final int feedback=0x7f06003a;
         public static final int female=0x7f060238;
         public static final int fetch_verification_code_prompt=0x7f060124;
-        public static final int file=0x7f060547;
+        public static final int file=0x7f060544;
         public static final int find=0x7f0600f7;
         public static final int find_contact=0x7f0601c8;
         public static final int find_failed=0x7f060348;
@@ -637,7 +636,7 @@ public final class R {
         public static final int gif_cannot_be_album=0x7f06051d;
         public static final int gif_cannot_be_chat_bg=0x7f06051e;
         public static final int gif_cannot_be_portrait=0x7f06051c;
-        public static final int gift=0x7f060546;
+        public static final int gift=0x7f060543;
         public static final int giftName0=0x7f060481;
         public static final int giftName1=0x7f060482;
         public static final int giftName2=0x7f060483;
@@ -719,9 +718,8 @@ public final class R {
         public static final int information=0x7f0603de;
         public static final int init_skin_list=0x7f0603c3;
         public static final int input_content=0x7f06042c;
-        public static final int input_name=0x7f06054e;
+        public static final int input_name=0x7f06054a;
         public static final int input_under_characters=0x7f060089;
-        public static final int input_username_info=0x7f06054b;
         public static final int input_verifycode=0x7f060447;
         public static final int invalid_account_prompt=0x7f060117;
         public static final int invalid_troop_code=0x7f0604da;
@@ -807,7 +805,7 @@ public final class R {
         public static final int mylocation=0x7f06025f;
         public static final int mylocation_failed=0x7f06025e;
         public static final int mylocation_title=0x7f06025d;
-        public static final int name_not_use=0x7f06054d;
+        public static final int name_not_use=0x7f060549;
         public static final int near_boy=0x7f06038a;
         public static final int near_default_boy=0x7f06038e;
         public static final int near_default_friend=0x7f06038d;
@@ -1073,7 +1071,7 @@ public final class R {
         public static final int refuse_to_my_request=0x7f0604a0;
         public static final int register=0x7f060125;
         public static final int register2=0x7f06000c;
-        public static final int register_tip=0x7f060548;
+        public static final int register_tip=0x7f060545;
         public static final int reject_offline_file=0x7f060416;
         public static final int relogin=0x7f060172;
         public static final int remind=0x7f060093;
@@ -1087,7 +1085,6 @@ public final class R {
         public static final int replace_face_success=0x7f060393;
         public static final int reply=0x7f060011;
         public static final int reply_hello=0x7f060401;
-        public static final int reply_my_shuoshuo=0x7f060545;
         public static final int reply_sub_floor=0x7f060085;
         public static final int reply_x_floor=0x7f060084;
         public static final int reproduce=0x7f060448;
@@ -1574,7 +1571,6 @@ public final class R {
         public static final int yes=0x7f0600e4;
         public static final int yesterday=0x7f0603d0;
         public static final int yicha=0x7f0604c9;
-        public static final int zhuanfa_my_shuoshuo=0x7f060544;
         public static final int zone=0x7f0603df;
     }
     public static final class style {
