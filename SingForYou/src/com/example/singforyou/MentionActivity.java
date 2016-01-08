@@ -87,7 +87,7 @@ public class MentionActivity extends Activity {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent(MentionActivity.this, ContentActivity.class);
 					Bundle bundle = new Bundle();
-					bundle.putString("PID", String.valueOf(messagelist.get(position).getPostID()));
+					bundle.putString("PID", String.valueOf(messagelist.get(arg2).getPostID()));
 					intent.putExtras(bundle);
 					startActivity(intent);
 				}
