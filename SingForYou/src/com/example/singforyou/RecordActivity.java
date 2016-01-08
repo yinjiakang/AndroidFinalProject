@@ -2,7 +2,6 @@ package com.example.singforyou;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Handler;
 
 import android.os.Bundle;
@@ -18,10 +17,6 @@ public class RecordActivity extends Activity {
     private Record record = new Record();
     String fileNamePrefix;
     String fileName;
-    String id;
-    int floor;
-    int post;
-    Bundle bundle;
     private ProgressDialog progressDialog;
 
     @Override
@@ -43,12 +38,7 @@ public class RecordActivity extends Activity {
                 if (record == null) {
                     return;
                 }
-                bundle = RecordActivity.this.getIntent().getExtras();
-                floor = bundle.getInt("floor");
-                post = bundle.getInt("post");
-                id = post+"_"+floor;
-                bundle.putString("musicid", id);
-                bundle.putBoolean("isRecorded", true);
+
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -59,15 +49,9 @@ public class RecordActivity extends Activity {
                                 public void run() {
                                     progressDialog.dismiss();
                                     confirm.setVisibility(View.INVISIBLE);
-                                    String newmusicId = post+"_"+floor;
-                                    ContentActivity.newFloor = new Floor("",LoginActivity.person.getName(),newmusicId,post,floor);
-                    				ContentActivity.floor_list.add(ContentActivity.newFloor);
-                    				ContentActivity.mFloorAdapter.notifyDataSetChanged();
-                    				finish();
                                 }
                             });
                             Log.e("upload", id + "");
-                            
                         } catch (Exception e) {
                             e.printStackTrace();
                             RecordActivity.this.runOnUiThread(new Runnable() {
@@ -84,7 +68,6 @@ public class RecordActivity extends Activity {
                 thread.start();
 
                 progressDialog = ProgressDialog.show(RecordActivity.this, "Uploading", "Please wait...");
-                
             }
         });
 
@@ -155,7 +138,7 @@ public class RecordActivity extends Activity {
         */
 
 
-        
+
     }
 
     @Override

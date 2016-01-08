@@ -85,7 +85,7 @@ public class MoreActivity extends Activity {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent(MoreActivity.this, ContentActivity.class);
 					Bundle bundle = new Bundle();
-					bundle.putString("PID", String.valueOf(messagelist.get(arg2).getPostID()));
+					bundle.putString("PID", String.valueOf(messagelist.get(position).getPostID()));
 					intent.putExtras(bundle);
 					startActivity(intent);
 				}
