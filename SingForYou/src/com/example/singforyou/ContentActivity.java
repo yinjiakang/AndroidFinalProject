@@ -78,7 +78,7 @@ public class ContentActivity extends Activity {
                  case 1:   
                 	 Host_name.setText(post.getPostName());
                      Host_content.setText(post.getContent());
-                     if (floor_list.size() != 0) {
+                     if (/*floor_list.size() != 0*/true) {
              			//mFloorAdapter = new FloorAdapter(ContentActivity.this,R.layout.content_item, floor_list);
                     	 Log.w("111111111111", floor_list.size()+"");
                     	mFadapter = new FloorAdapter(ContentActivity.this, floor_list);
@@ -129,6 +129,8 @@ public class ContentActivity extends Activity {
 				Bundle bundle = new Bundle();
 				int newfloorId = post.getNumOfFloor()+1;
 				int newBelongto = post.getPostID();
+				Log.w("-------------", newfloorId+"");
+				Log.w("===============", newBelongto+"");
 
 				bundle.putInt("floor", newfloorId);
 				bundle.putInt("post", newBelongto);
@@ -143,6 +145,9 @@ public class ContentActivity extends Activity {
 				
 				new Thread(new Runnable() {
 
+					    int floorid = post.getNumOfFloor() + 1;
+					    String mid = String.valueOf(post.getPostID()) + '_' + String.valueOf((post.getNumOfFloor() + 1));
+					    
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
@@ -156,7 +161,11 @@ public class ContentActivity extends Activity {
 			        	        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
 			        	        
 			        	        //out.writeBytes("mobileCode=" + pNumber.getText().toString() + "&userID=");
-			        	        out.writeBytes("fid=" + newFloor.getFloorID() + "&bto=" + newFloor.getBelongTo() + "&fcontent=" + newFloor.getContent() + "&hostname=" + URLEncoder.encode(newFloor.getHostName()) + "&mid=" + newFloor.getMusicID()); 
+			        	        Log.w("midddddddddddddddddd", mid);
+			        	        Log.w("11111111", post.getPostID()+"");
+			        	        Log.w("2222222", floorid+"");
+			        	        Log.w("33333333", LoginActivity.person.getName());
+			        	        out.writeBytes("fid=" + floorid + "&bto=" + post.getPostID() + "&fcontent=" + "" + "&hostname=" + URLEncoder.encode(LoginActivity.person.getName()) + "&mid=" + mid); 
 			        	        InputStream in = connection.getInputStream();
 			        	        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			        	        StringBuilder response = new StringBuilder();
@@ -178,7 +187,6 @@ public class ContentActivity extends Activity {
 						}
 						
 					}).start();
-					
 					
 					
 				
@@ -216,10 +224,12 @@ public class ContentActivity extends Activity {
         	        while ((line = reader.readLine()) != null) {
         	        	response.append(line);
         	        }
+        	        Log.w("hhhhhhhbbbbbbbb", response.toString());
         	        post = parsePostWithPull(response.toString());
         	        
         	        
         	        //以下为对楼层进行xml获取
+        	        connection = null;
         	        connection = (HttpURLConnection)((new URL(url1.toString()).openConnection()));
         			connection.setRequestMethod("POST");
         	        connection.setConnectTimeout(40000);
@@ -233,7 +243,7 @@ public class ContentActivity extends Activity {
         	        while ((line = reader.readLine()) != null) {
         	        	response1.append(line);
         	        }
-        	        Log.w("hhhhhhhaaaaaaaaa", response.toString());
+        	        Log.w("hhhhhhhaaaaaaaaa", response1.toString());
         	        floor_list = parseFloorWithPull(response1.toString());
         	        Message mes = new Message();
         	        mes.what = 1;
@@ -259,8 +269,9 @@ public class ContentActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(ContentActivity.this, TiebaActivity.class);
-				startActivity(intent);
+				/*Intent intent = new Intent(ContentActivity.this, TiebaActivity.class);
+				startActivity(intent);*/
+				finish();
 			}
 		});
 		
@@ -389,6 +400,7 @@ public class ContentActivity extends Activity {
 					// TODO Auto-generated method stub
 					final String MID = mFloor.get(position).getMusicID();
 					Log.w("aaaaaaaaaaaaaaa", MID);
+					
 					
 					fileNamePrefix = ContentActivity.this.getFilesDir() + "/";
 					fileName = fileNamePrefix + MID + ".3gp";
