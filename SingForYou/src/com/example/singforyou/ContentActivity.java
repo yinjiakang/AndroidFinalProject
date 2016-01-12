@@ -52,12 +52,7 @@ public class ContentActivity extends Activity {
 	public static List<Floor> floor_list = new ArrayList<Floor>();
 	private TextView Host_name;
 	private TextView Host_content;
-	private TextView floorName;
-	private TextView singTime;
-	private SeekBar mSeekBar;
 	private ImageButton play;
-	private SimpleDateFormat time = new SimpleDateFormat("m:ss");
-	private String musicId;
 	private String fileName;
 	private ImageButton reply;
 	ProgressDialog progressDialog;
@@ -341,7 +336,6 @@ public class ContentActivity extends Activity {
 		private LayoutInflater layoutInflater;
 		public class Floorlistview {
 			public TextView t1;
-			public TextView t2;
 		}
 		public FloorAdapter(Context context, List<Floor> objects) {
 			this.context = context;
@@ -374,24 +368,12 @@ public class ContentActivity extends Activity {
     			flistview = new Floorlistview();
     			convertView = layoutInflater.inflate(R.layout.content_item, null);
     			flistview.t1 = (TextView)convertView.findViewById(R.id.floorName);
-    			flistview.t2 = (TextView)convertView.findViewById(R.id.singTime);
     			convertView.setTag(flistview);
     		} else {
     			flistview = (Floorlistview)convertView.getTag();
     		}
 			flistview.t1.setText(mFloor.get(position).getHostName());
-			flistview.t2.setText(mFloor.get(position).getContent());
-			Log.w("222211111", "hhhhhhhhh");
-			/*mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-					// TODO Auto-generated method stub
-					Log.w("22222222222", "hhhhhhhhh");
-					String MID = mFloor.get(arg2).getMusicID();
-					Log.w("aaaaaaaaaaaaaaa", MID);
-				}
-			});*/
+			
 			play = (ImageButton)convertView.findViewById(R.id.btn_play);
 			play.setOnClickListener(new View.OnClickListener() {
 				
@@ -443,132 +425,7 @@ public class ContentActivity extends Activity {
 		}
 		
 	}
-	//为每一个floor设置适配器
-	/*public class FloorAdapter extends ArrayAdapter<Floor>{
-		private List<Floor> myfloor = new ArrayList<Floor>();
-	    private int resource; 
-	    public FloorAdapter(Context context, int resourceId, List<Floor> objects) { 
-	        super(context, resourceId, objects); 
-	        // 记录下来稍后使用 
-	        resource = resourceId;
-	        myfloor = objects;
-	    }
-
-	    public View getView(int position, View convertView, ViewGroup parent) { 
-	        LinearLayout FloorListView; 
-	        // 获取数据 
-	        Floor floor = getItem(position); 
-	        if(convertView == null) { 
-	            FloorListView = new LinearLayout(getContext()); 
-	            LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-	            inflater.inflate(resource, FloorListView, true);//把布局解析到LinearLayout里面 
-	        } else { 
-	            FloorListView = (LinearLayout)convertView; 
-	        }
-	        
-	        
 	
-	      
-	        
-	        
-
-	        // 获取控件,填充数据 
-	        floorName = (TextView)FloorListView.findViewById(R.id.floorName);
-			singTime = (TextView)FloorListView.findViewById(R.id.singTime);
-			mSeekBar = (SeekBar)FloorListView.findViewById(R.id.seekbar);
-			play = (ImageButton)FloorListView.findViewById(R.id.btn_play);
-			
-			musicId = floor.getMusicID();
-			floorName.setText(floor.getHostName());
-			
-			final Record record = new Record();
-			record.init();
-			//设置进度条
-	    	r = new Runnable() {
-
-				@Override
-				public void run() {
-					// TODO 自动生成的方法存根
-					singTime.setText(time.format(record.mediaPlayer.getCurrentPosition())+"/"+time.format(record.mediaPlayer.getDuration()));
-					mSeekBar.setProgress(record.mediaPlayer.getCurrentPosition());
-					mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-						
-						@Override
-						public void onStopTrackingTouch(SeekBar seekBar) {
-							// TODO 自动生成的方法存根
-							
-						}
-						
-						@Override
-						public void onStartTrackingTouch(SeekBar seekBar) {
-							// TODO 自动生成的方法存根
-							
-						}
-						
-						@Override
-						public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-							// TODO 自动生成的方法存根
-							if (fromUser) {
-								record.mediaPlayer.seekTo(seekBar.getProgress());
-							}
-						}
-					});
-					handler.postDelayed(r, 100);
-				}
-				
-			};
-	    	//download函数崩了
-	    	 //*点击播放按钮的时候
-	    	// *待完成
-	
-			
-	        
-	      
-			
-			
-			
-	    	//点击播放按钮
-			
-	        play.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					// TODO 自动生成的方法存根
-					//获取路径
-					
-					
-			        fileNamePrefix = ContentActivity.this.getFilesDir() + "/";
-			        fileName = fileNamePrefix + musicId + ".3gp";
-			        record.download(fileName, musicId);
-			        if ( !record.isSDCardExist() ) {
-			            Log.e("Record", "SD card does not exist!");
-			        }
-			        System.out.println("11111");
-					singTime.setText("ok");
-					//这里获取播放的音频
-					if (record.mediaPlayer.isPlaying()) {
-						play.setImageResource(R.drawable.pause);
-						record.mediaPlayer.pause();
-					} else {
-						play.setImageResource(R.drawable.play);
-						if (record.mediaPlayer != null) {
-							record.mediaPlayer.start();
-						} else {
-							record.startPlaying(fileName);
-					
-						}
-					}
-					singTime.setText(time.format(record.mediaPlayer.getCurrentPosition())+"/"+time.format(record.mediaPlayer.getDuration()));
-					mSeekBar.setProgress(record.mediaPlayer.getCurrentPosition());
-					mSeekBar.setMax(record.mediaPlayer.getDuration());
-					handler.post(r);
-				}
-				
-			});
-			
-	        return FloorListView; 
-	    }
-	}*/
 	
 	
 	//////////////////////////////////////////////////////////////////
